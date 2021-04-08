@@ -55,7 +55,7 @@ class SignDokumenAction {
                 'jenis_response' => 'BASE64'
             ];
             curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://192.168.18.27/api/sign/pdf",
+            CURLOPT_URL => url_server()."/api/sign/pdf",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,

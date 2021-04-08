@@ -10,7 +10,7 @@ class ValidasiDokumenAction {
             'signed_file' => curl_file_create($file,'application/pdf',$namaFile),
         ];
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "http://192.168.18.27/api/sign/verify",
+        CURLOPT_URL => url_server()."/api/sign/verify",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,

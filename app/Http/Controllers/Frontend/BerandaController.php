@@ -1336,13 +1336,8 @@ class BerandaController extends Controller
 
     public function printWebView(Request $request)
 
-    {
-
-        
-
+    {   
         try{
-        	$request->suket_id = base64_decode($request->suket_id);
-
           $user = User::where('api_token',$request->token)->first();
 
           if(empty($user)){
@@ -1415,7 +1410,7 @@ class BerandaController extends Controller
 
             // set_time_limit(500);
 
-            $dokumen = \App\Models\Dokumen::where('suket_id',$surat->id)->where('jenis',$request->jenis_suket.'-')->first();
+            $dokumen = \App\Models\Dokumen::where('suket_id',$surat->id)->where('jenis',$request->jenis_suket)->first();
             if(!$dokumen){
                 toastr()->error('Surat tidak ditemukan','error');
                 return redirect()->back();
