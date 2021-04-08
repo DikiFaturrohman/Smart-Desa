@@ -1415,7 +1415,7 @@ class BerandaController extends Controller
 
             // set_time_limit(500);
 
-            $dokumen = \App\Models\Dokumen::where('suket_id',$surat->id)->where('jenis',$request->jenis_suket.'-')->first();
+            $dokumen = \App\Models\Dokumen::where('suket_id',$surat->id)->where('jenis',$request->jenis_suket)->first();
             if(!$dokumen){
                 toastr()->error('Surat tidak ditemukan','error');
                 return redirect()->back();
