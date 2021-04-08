@@ -1336,13 +1336,8 @@ class BerandaController extends Controller
 
     public function printWebView(Request $request)
 
-    {
-
-        
-
+    {   
         try{
-        	$request->suket_id = base64_decode($request->suket_id);
-
           $user = User::where('api_token',$request->token)->first();
 
           if(empty($user)){
