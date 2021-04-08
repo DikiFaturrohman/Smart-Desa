@@ -21,7 +21,7 @@ class DownloadDokumenAction {
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "http://192.168.18.27/api/sign/download/".$id_dokumen,
+        CURLOPT_URL => url_server()."/api/sign/download/".$id_dokumen,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
