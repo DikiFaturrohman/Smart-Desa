@@ -45,8 +45,8 @@
                     <td class="tengah">
                         <img style="margin-top: -1.2em; left: -1.1em" class="d-flex float-left tengah-gambar" src="assets/img/logo.png" width="86px" height="115px">
                         <h1 style="font-size: 17pt;margin-top: -1em">PEMERINTAH DAERAH KABUPATEN SUBANG</h1>
-                        <h1 style="font-size: 18pt;margin-top: -1em">KECAMATAN {{$desa->desa->kecamatan->nama}}</h1>
-                        <h1 style="font-size: 19pt;margin-top: -1em">KANTOR {{($desa->desa->kecamatan->id == '2018110602402')?'KELURAHAN':'DESA'}}
+                        <h1 style="font-size: 18pt;margin-top: -0.5em">KECAMATAN {{$desa->desa->kecamatan->nama}}</h1>
+                        <h1 style="font-size: 19pt;margin-top: -0.4em">KANTOR {{($desa->desa->kecamatan->id == '2018110602402')?'KELURAHAN':'DESA'}}
                             {{($desa)?strtoupper($desa->nama):Auth::guard('masyarakat')->user()->desa->nama}}</h1>
                         <p style="margin-top: -1em;margin-bottom: -0.25em;">{!!($desa)?$desa->alamat:'-'!!}</p>
                     </td>

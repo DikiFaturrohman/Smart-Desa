@@ -114,7 +114,7 @@
                                         @php $suket = 'sapujagad'; @endphp
                                     @endif
                                     <span>{{$operator->pesan}}</span>
-                                    <span class="text-danger"><a href="{{route('frontend.suket.'.$suket.'.edit',['id' => $suket_id])}}"
+                                    <span class="text-danger"><a href="{{route('frontend.suket.'.$suket.'.edit',['id' => base64_encode($suket_id)])}}"
                                     >Perbaiki</a></span>
                                 </div>
                             </div>

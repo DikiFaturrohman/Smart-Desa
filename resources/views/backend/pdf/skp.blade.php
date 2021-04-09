@@ -10,6 +10,27 @@
             padding-top: 0px;
         }
 
+        .halaman {
+            position: relative;
+            background-color: transparent;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 5px;
+            background-color: transparent;
+            text-align: center;
+            font-size: 10pt;
+            color: #3e3e3e;
+        }
+
+        .ttd {
+            width: 280px;
+            padding: 2px;
+            border: 1px solid #000;
+            margin: 0;
+        }
+
         table {
             width: 100%;
         }
@@ -33,6 +54,7 @@
         .kopsurat {
             border-bottom: 4px groove #000;
         }
+
     </style>
 </head>
 
@@ -44,10 +66,12 @@
                 <tr>
                     <!-- <td class="tengah-gambar" ><img src="assets/img/logo.png" width="90px" height="128px"></td> -->
                     <td class="tengah">
-                        <img style="margin-top: -1.2em; left: -1.1em" class="d-flex float-left tengah-gambar" src="assets/img/logo.png" width="86px" height="115px">
+                        <img style="margin-top: -1.2em; left: -1.1em" class="d-flex float-left tengah-gambar"
+                            src="assets/img/logo.png" width="86px" height="115px">
                         <h1 style="font-size: 17pt;margin-top: -1em">PEMERINTAH DAERAH KABUPATEN SUBANG</h1>
-                        <h1 style="font-size: 18pt;margin-top: -1em">KECAMATAN {{$desa->desa->kecamatan->nama}}</h1>
-                        <h1 style="font-size: 19pt;margin-top: -1em">KANTOR {{($desa->desa->kecamatan->id == '2018110602402')?'KELURAHAN':'DESA'}}
+                        <h1 style="font-size: 18pt;margin-top: -0.5em">KECAMATAN {{$desa->desa->kecamatan->nama}}</h1>
+                        <h1 style="font-size: 19pt;margin-top: -0.4em">KANTOR
+                            {{($desa->desa->kecamatan->id == '2018110602402')?'KELURAHAN':'DESA'}}
                             {{($desa)?strtoupper($desa->nama):Auth::guard('masyarakat')->user()->desa->nama}}</h1>
                         <p style="margin-top: -1em;margin-bottom: -0.25em;">{!!($desa)?$desa->alamat:'-'!!}</p>
                     </td>
@@ -58,7 +82,9 @@
             <p class="tengah"><b><u>SURAT KETERANGAN PENGHASILAN (SKP)</u></b></p>
             <p class="tengah" style="margin-top: -0.8em;"><b>Nomor : {{$skp->no_surat}}</b></p>
 
-            <p>Saya yang bertanda tangan di bawah, {{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}} <b>{{($desa)?$desa->kades:'-'}}</b> Desa
+            <p>Saya yang bertanda tangan di bawah,
+                {{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}}
+                <b>{{($desa)?$desa->kades:'-'}}</b> Desa
                 <b>{{($desa)?$desa->nama:ucwords(strtolower($desa->desa->nama))}}</b> Kecamatan
                 <b>{{ucwords(strtolower($desa->desa->kecamatan->nama))}}</b> Kabupaten <b>Subang</b>, dengan ini
                 menerangkan bahwa :</p>
@@ -99,14 +125,16 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}. {{ucwords(strtolower($skp->area->nama))}} Kec.
+                        <td>{{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}.
+                            {{ucwords(strtolower($skp->area->nama))}} Kec.
                             {{ucwords(strtolower($skp->kecamatan->nama))}} Kab. Subang</td>
                     </tr>
                 </table>
             </p>
 
             <p>Nama yang tertera diatas adalah benar-benar penduduk kami yang tepatnya berdomisili di {!! $skp->alamat
-                !!} {{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}} {{ucwords(strtolower($skp->area->nama))}} Kecamatan
+                !!} {{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}
+                {{ucwords(strtolower($skp->area->nama))}} Kecamatan
                 {{ucwords(strtolower($skp->kecamatan->nama))}} Kabupaten Subang. Menurut pengamatan kami adalah benar
                 yang bersangkutan memilki penghasilan rata-rata sebulan Rp {{number_format($skp->gaji,0,',','.')}} dan
                 menanggung {{$skp->jumlah_tanggungan}} Orang anggota keluarga</p>
@@ -117,29 +145,53 @@
             <p>
                 <table>
                     <tr>
-                        <td style="width: 35%;"></td>
+                        <td style="width: 24%;"></td>
                         <td style="width: 20%;"></td>
-                        <td style="width: 45%;">
+                        <td style="width: 46%;">
                             <table>
                                 <tr>
-                                    <td style="width: 20%;">Dikeluarkan di</td>
-                                    <td style="width: 5px">:</td>
-                                    <td style="width: 80%;">
-                                        {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower($desa->desa->nama))}}</td>
+                                    <td style="width: 30%;" align="left">Dikeluarkan di</td>
+                                    <td style="width: 2px" align="left">:</td>
+                                    <td style="width: 68%;padding-left:10px" align="left">
+                                        {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 20%;">Pada tanggal</td>
-                                    <td style="width: 5px">:</td>
-                                    <td style="width: 80%;">
+                                    <td style="width: 30%;" align="left">Pada tanggal</td>
+                                    <td style="width: 2px" align="left">:</td>
+                                    <td style="width: 68%;padding-left:10px" align="left">
                                         {{\Carbon\Carbon::parse($skp->finished_date)->translatedFormat('d F Y')}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 100%;">
-                                        {{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}} {{($desa)?$desa->nama:$desa->desa->nama}}
+                                    <!--                                     <td colspan="3" style="width: 100%;">
+                                    {{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}} {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}
                                         <br><br>
-                                        <span><img src="data:image/png;base64, {!! base64_encode($barcode) !!} "
+                                        <center>
+                                        <span ><img src="data:image/png;base64, {!! base64_encode($barcode) !!} "
                                                 width="100"></span><br><br>
-                                        <span><b><u>{{($desa)?$desa->kades:'-'}}</u></b></span>
+                                        <span><b><u>{{($desa)?$desa->kades:'-'}}</u></b></span></center>
+										
+                                    </td> -->
+                                    <td colspan="3">
+                                        <div class="ttd">
+                                            <table>
+                                                <tr>
+                                                    <td width="70px">
+                                                        <img style="width:55px;height:55px"
+                                                            src="{{asset('frontend/img/bsre.png')}}">
+                                                    </td>
+                                                    <td width="210px">
+                                                        <span style="font-size:12px;">Ditandatangani secara elektronik
+                                                            oleh:</span><br>
+                                                        <span>{{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}}
+                                                            {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}</span><br><br>
+
+                                                        <span
+                                                            style="margin-top:12px;font-weight:bold">{{($desa)?$desa->kades:'-'}}</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -149,6 +201,18 @@
                     </tr>
                 </table>
             </p>
+        </div>
+        <div class="footer">
+            <table>
+                <tr>
+                    <td style="width:10%"><img src="data:image/png;base64+, {!! base64_encode($barcode) !!}"
+                            height="45px"></td>
+                    <td style=" width:90%">Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat
+                        elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik, Badan Siber dan Sandi Negara.
+                        Tidak perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen
+                        melalui aplikasi VeryDS diplaystore atau kunjungi https://tte.kominfo.go.id/verifyPDF</td>
+                </tr>
+            </table>
         </div>
     </div>
 
