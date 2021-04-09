@@ -648,6 +648,18 @@ Route::middleware('domain')->namespace('Backend')->prefix('backoffice')->group(f
 		return redirect()->back();
 	});
 
+    Route::get('/apps-down', function() {
+		Artisan::call('down');
+		toastr()->success('Smartdesa is Maintenance','Berhasil');
+		return redirect()->back();
+	});
+
+	Route::get('/apps-up', function() {
+		Artisan::call('up');
+		toastr()->success('Smartdesa is back','Berhasil');
+		return redirect()->back();
+	});
+
 });
 
 

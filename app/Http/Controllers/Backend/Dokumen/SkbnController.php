@@ -265,7 +265,7 @@ class SkbnController extends Controller
             }
             $ktp = $request->file('ktp');
             $destinationPath = public_path('backend/images/dokumen/skbn/ktp');
-            $nama_ktp = 'skbn_ktp_'.strtolower(str_replace(' ','_',$request->data_dok_benar)).'.'.'_'.date('YmdHis').$ktp->getClientOriginalExtension();
+            $nama_ktp = 'skbn_ktp_'.strtolower(str_replace(' ','_',$request->data_dok_benar)).'_'.date('YmdHis').$ktp->getClientOriginalExtension();
             $ktp->move($destinationPath,$nama_ktp);
         }else{
             if($request->id){
@@ -281,7 +281,7 @@ class SkbnController extends Controller
             }
             $kk = $request->file('kk');
             $destinationPath = public_path('backend/images/dokumen/skbn/kk');
-            $nama_kk = 'skbn_kk_'.strtolower(str_replace(' ','_',$request->data_dok_benar)).'.'.'_'.date('YmdHis').$kk->getClientOriginalExtension();
+            $nama_kk = 'skbn_kk_'.strtolower(str_replace(' ','_',$request->data_dok_benar)).'_'.date('YmdHis').$kk->getClientOriginalExtension();
             $kk->move($destinationPath,$nama_kk);
         }else{
             if($request->id){

@@ -106,13 +106,13 @@ class SkspController extends Controller
             if($request->file('file_ktp')){
                 $ktp = $request->file('file_ktp');
                 $destinationPathKtp = public_path('backend/images/dokumen/skn/ktp');
-                $nama_ktp = 'skn_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
+                $nama_ktp = 'skn_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
             }
 
             if($request->file('file_kk')){
                 $kk = $request->file('file_kk');
                 $destinationPathKk = public_path('backend/images/dokumen/skn/kk');
-                $nama_kk = 'skn_kk'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').'.'.$kk->getClientOriginalExtension();
+                $nama_kk = 'skn_kk'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$kk->getClientOriginalExtension();
             }
 
             if($request->file('file_akta_cerai')){

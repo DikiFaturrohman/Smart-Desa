@@ -442,7 +442,7 @@ class SkkController extends Controller
             }
             $surat_nikah = $request->file('file_surat_nikah');
             $destinationPath = public_path('backend/images/dokumen/skk/surat_nikah');
-            $nama_surat_nikah = 'skk_nikah_'.strtolower(str_replace(' ','_',$request->nama_bayi)).'.'.'_'.date('YmdHis').$surat_nikah->getClientOriginalExtension();
+            $nama_surat_nikah = 'skk_nikah_'.strtolower(str_replace(' ','_',$request->nama_bayi)).'_'.date('YmdHis').$surat_nikah->getClientOriginalExtension();
             $surat_nikah->move($destinationPath,$nama_surat_nikah);
         }else{
             if($request->id){
@@ -458,7 +458,7 @@ class SkkController extends Controller
             }
             $kk = $request->file('file_kk');
             $destinationPath = public_path('backend/images/dokumen/skk/kk');
-            $nama_kk = 'skk_kk'.strtolower(str_replace(' ','_',$request->nama_bayi)).'.'.'_'.date('YmdHis').$kk->getClientOriginalExtension();
+            $nama_kk = 'skk_kk'.strtolower(str_replace(' ','_',$request->nama_bayi)).'_'.date('YmdHis').$kk->getClientOriginalExtension();
             $kk->move($destinationPath,$nama_kk);
         }else{
             if($request->id){

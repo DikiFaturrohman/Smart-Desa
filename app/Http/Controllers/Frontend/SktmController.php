@@ -301,7 +301,7 @@ class SktmController extends Controller
                 }
                 $ktp = $request->file('file_ktp');
                 $destinationPathKtp = public_path('backend/images/dokumen/sktm/ktp');
-                $nama_ktp = 'sktm_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
+                $nama_ktp = 'sktm_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
             }else{
                 $nama_ktp = $sktm->file_ktp;
             }
@@ -312,7 +312,7 @@ class SktmController extends Controller
                 }
                 $kk = $request->file('file_kk');
                 $destinationPathKk = public_path('backend/images/dokumen/sktm/kk');
-                $nama_kk = 'sktm_kk'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').'.'.$kk->getClientOriginalExtension();
+                $nama_kk = 'sktm_kk'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$kk->getClientOriginalExtension();
             }else{
                 $nama_kk = $sktm->file_kk;
             }

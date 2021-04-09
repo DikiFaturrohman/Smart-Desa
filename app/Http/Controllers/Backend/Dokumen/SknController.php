@@ -267,7 +267,7 @@ class SknController extends Controller
             }
             $ktp = $request->file('ktp');
             $destinationPath = public_path('backend/images/dokumen/skn/ktp');
-            $nama_ktp = 'skn_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').$ktp->getClientOriginalExtension();
+            $nama_ktp = 'skn_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').$ktp->getClientOriginalExtension();
             $ktp->move($destinationPath,$nama_ktp);
         }else{
             if($request->id){
@@ -283,7 +283,7 @@ class SknController extends Controller
             }
             $kk = $request->file('kk');
             $destinationPath = public_path('backend/images/dokumen/skn/kk');
-            $nama_kk = 'skn_kk_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').$kk->getClientOriginalExtension();
+            $nama_kk = 'skn_kk_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').$kk->getClientOriginalExtension();
             $kk->move($destinationPath,$nama_kk);
         }else{
             if($request->id){

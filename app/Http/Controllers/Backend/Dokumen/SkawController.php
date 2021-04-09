@@ -369,7 +369,7 @@ class SkawController extends Controller
             }
             $ktp = $request->file('ktp');
             $destinationPath = public_path('backend/images/dokumen/skaw/ktp');
-            $nama_ktp = 'skaw_ktp_'.strtolower(str_replace(' ','_',$request->nama_alm)).'.'.'_'.date('YmdHis').$ktp->getClientOriginalExtension();
+            $nama_ktp = 'skaw_ktp_'.strtolower(str_replace(' ','_',$request->nama_alm)).'_'.date('YmdHis').$ktp->getClientOriginalExtension();
             $ktp->move($destinationPath,$nama_ktp);
         }else{
             if($request->id){
@@ -385,7 +385,7 @@ class SkawController extends Controller
             }
             $kk = $request->file('kk');
             $destinationPath = public_path('backend/images/dokumen/skaw/kk');
-            $nama_kk = 'skaw_kk_'.strtolower(str_replace(' ','_',$request->nama_alm)).'.'.'_'.date('YmdHis').$kk->getClientOriginalExtension();
+            $nama_kk = 'skaw_kk_'.strtolower(str_replace(' ','_',$request->nama_alm)).'_'.date('YmdHis').$kk->getClientOriginalExtension();
             $kk->move($destinationPath,$nama_kk);
         }else{
             if($request->id){

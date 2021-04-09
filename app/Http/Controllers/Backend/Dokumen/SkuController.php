@@ -240,7 +240,7 @@ class SkuController extends Controller
             }
             $rtrw = $request->file('rtrw');
             $destinationPath = public_path('backend/images/dokumen/sku/rtrw');
-            $nama_rtrw = 'sku_rtrw'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$rtrw->getClientOriginalExtension();
+            $nama_rtrw = 'sku_rtrw_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$rtrw->getClientOriginalExtension();
             $rtrw->move($destinationPath,$nama_rtrw);
         }else{
             if($request->id){
@@ -256,7 +256,7 @@ class SkuController extends Controller
             }
             $ktp = $request->file('ktp');
             $destinationPath = public_path('backend/images/dokumen/sku/ktp');
-            $nama_ktp = 'sku_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').$ktp->getClientOriginalExtension();
+            $nama_ktp = 'sku_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
             $ktp->move($destinationPath,$nama_ktp);
         }else{
             if($request->id){
@@ -272,7 +272,7 @@ class SkuController extends Controller
             }
             $kk = $request->file('kk');
             $destinationPath = public_path('backend/images/dokumen/sku/kk');
-            $nama_kk = 'sku_kk'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').$kk->getClientOriginalExtension();
+            $nama_kk = 'sku_kk_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$kk->getClientOriginalExtension();
             $kk->move($destinationPath,$nama_kk);
         }else{
             if($request->id){
