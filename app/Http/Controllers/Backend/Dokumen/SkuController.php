@@ -20,6 +20,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SkuController extends Controller
 {
@@ -58,6 +59,7 @@ class SkuController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -65,14 +67,17 @@ class SkuController extends Controller
             $data['status'] = '1';
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
             $sku = SKU::create($data);
-
+            $generateFile = (new GenerateFileAction)->run($sku->id,'sku');
             $log = $this->suketLogNotifikasi($sku,'sku','Verifikasi','Pengajuan Surat Keterangan Usaha telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Usaha disetujui oleh operator desa');
+
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sku,'sku'));
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.sku.detail',['id'=>$sku->encodeHash($sku->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -95,6 +100,7 @@ class SkuController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -102,14 +108,15 @@ class SkuController extends Controller
             $data = $this->bindData($request);
             $sku = SKU::find($id);
             $sku->update($data);
-
+            $generateFile = (new GenerateFileAction)->run($sku->id,'sku');
             $log = $this->suketLogNotifikasi($sku,'sku','Verifikasi','Pengajuan Surat Keterangan Usaha telah di verifikasi Oleh Operator Desa','operator','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sku,'sku'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.sku.detail',['id'=>$sku->encodeHash($sku->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -341,6 +348,7 @@ class SkuController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);    
             $sku = SKU::find($id);
@@ -369,7 +377,7 @@ class SkuController extends Controller
                 $log = $this->suketLogNotifikasi($sku,'sku','Verifikasi','Pengajuan Surat Keterangan Usaha telah di verifikasi Oleh Kepala Desa','kades','terima');
                 $admin = $this->getAdmin('operator',Session::get('desa_id'));
                 $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Usaha disetujui oleh kepala desa');
-    
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.sku');
             }else{
@@ -377,6 +385,7 @@ class SkuController extends Controller
                 return redirect()->route('backend.dokumen.sku.detail',['id'=>$sku->encodeHash($sku->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -384,6 +393,7 @@ class SkuController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sku = SKU::find($id);
@@ -392,12 +402,14 @@ class SkuController extends Controller
             $log = $this->suketLogNotifikasi($sku,'sku','Verifikasi','Pengajuan Surat Keterangan Usaha telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
             $admin = $this->getAdmin('kepala_desa',Session::get('desa_id'));
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Usaha disetujui oleh sekretaris desa');
+            DB::commit();
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','kepala_desa')->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sku,'sku'));
 
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sku');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -405,6 +417,7 @@ class SkuController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sku = SKU::find($id);
@@ -413,12 +426,15 @@ class SkuController extends Controller
             $log = $this->suketLogNotifikasi($sku,'sku','Verifikasi','Pengajuan Surat Keterangan Usaha telah di verifikasi Oleh Kasi Desa','kasi','terima');
             $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Usaha disetujui oleh kasi desa');
+
+            DB::commit();
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','sekretaris_desa')->first();
             
             // Mail::to($admin->email)->send(new SuketMail($admin,$sku,'sku'));
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sku');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -426,6 +442,7 @@ class SkuController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sku = SKU::find($id);
@@ -446,10 +463,11 @@ class SkuController extends Controller
             }
 
             $sku->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.sku');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -457,6 +475,7 @@ class SkuController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sku = SKU::find($id);
@@ -475,9 +494,12 @@ class SkuController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $log = $this->suketLogNotifikasi($sku,'sku','Penolakan',$request->pesan,'operator','tolak');
+
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.sku');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -485,6 +507,7 @@ class SkuController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sku = SKU::find($id);
@@ -515,9 +538,12 @@ class SkuController extends Controller
             $sku->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($sku,'sku','Verifikasi','Pengajuan Surat Keterangan Usaha telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Usaha disetujui oleh operator desa');
+
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sku');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }

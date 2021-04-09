@@ -36,6 +36,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 
 class SksjController extends Controller
@@ -113,7 +114,7 @@ class SksjController extends Controller
     public function createProccess(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $this->validasiForm($request);
@@ -127,11 +128,12 @@ class SksjController extends Controller
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
 
             $sksj =SKSJ::create($data);
+            $generateFile = (new GenerateFileAction)->run($sksj->id,'sksj');
 
             $log = $this->suketLogNotifikasi($sksj,'sksj','Verifikasi','Pengajuan Surat Keterangan Sapu Jagat Berhasil dan Telah di verifikasi','operator','terima');
 
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Sapu Jagat disetujui oleh operator desa');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
 
             // Mail::to($admin->email)->send(new SuketMail($admin,$sksj,'sksj'));
@@ -139,9 +141,9 @@ class SksjController extends Controller
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
 
             return redirect()->route('backend.dokumen.sksj.detail',['id'=>$sksj->encodeHash($sksj->id)]);
-
+            
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -185,7 +187,7 @@ class SksjController extends Controller
     public function editProccess(Request $request,$id)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($id);
@@ -197,6 +199,7 @@ class SksjController extends Controller
             $data = $this->bindData($request);
 
             $sksj = SKSJ::find($id);
+            $generateFile = (new GenerateFileAction)->run($sksj->id,'sksj');
 
             $sksj->update($data);
 
@@ -205,13 +208,13 @@ class SksjController extends Controller
             // $admin = Admin::where('email',$request->email)->first();
 
             // Mail::to($admin->email)->send(new SuketMail($admin,$sksj,'sksj'));
-
+            DB::commit();
             toastr()->success('Data Berhasil Diubah','Sukses');
 
             return redirect()->route('backend.dokumen.sksj.detail',['id'=>$sksj->encodeHash($sksj->id)]);
 
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -629,7 +632,7 @@ class SksjController extends Controller
     public function verifikasiKades(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($request->id);
@@ -671,7 +674,7 @@ class SksjController extends Controller
                 // Mail::to($admin->email)->send(new SuketMail($admin,$sksj,'sksj'));
 
 
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
 
                 return redirect()->route('backend.dokumen.sksj');
@@ -680,7 +683,7 @@ class SksjController extends Controller
                 return redirect()->route('backend.dokumen.sksj.detail',['id'=>$sksj->encodeHash($sksj->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -694,7 +697,7 @@ class SksjController extends Controller
     public function verifikasiSekdes(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($request->id);
@@ -716,13 +719,13 @@ class SksjController extends Controller
             // Mail::to($admin->email)->send(new SuketMail($admin,$sksj,'sksj'));
 
 
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
 
             return redirect()->route('backend.dokumen.sksj');
 
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -736,7 +739,7 @@ class SksjController extends Controller
     public function verifikasiKasi(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($request->id);
@@ -750,7 +753,7 @@ class SksjController extends Controller
             $log = $this->suketLogNotifikasi($sksj,'sksj','Verifikasi','Pengajuan Surat Keterangan Sapu Jagat Telah di verifikasi Oleh Kasi Desa','kasi','terima');
 
 
-
+            DB::commit();
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
 
             // Mail::to($admin->email)->send(new SuketMail($admin,$sksj,'sksj'));
@@ -762,7 +765,7 @@ class SksjController extends Controller
             return redirect()->route('backend.dokumen.sksj');
 
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -776,7 +779,7 @@ class SksjController extends Controller
     public function delete(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($request->id);
@@ -808,7 +811,7 @@ class SksjController extends Controller
 
 
             $sksj->delete();
-
+            DB::commit();
 
 
             toastr()->success('Data Berhasil Dihapus','Sukses');
@@ -816,7 +819,7 @@ class SksjController extends Controller
             return redirect()->route('backend.dokumen.sksj');
 
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -828,7 +831,7 @@ class SksjController extends Controller
     public function rejected(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($request->id);
@@ -849,13 +852,13 @@ class SksjController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $log = $this->suketLogNotifikasi($sksj,'sksj','Penolakan',$request->pesan,'operator','tolak');
-
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
 
             return redirect()->route('backend.dokumen.sksj');
 
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();
@@ -869,7 +872,7 @@ class SksjController extends Controller
     public function accepted(Request $request)
 
     {
-
+        DB::beginTransaction();
         try{
 
             $id = $this->decodeHash($request->id);
@@ -915,13 +918,13 @@ class SksjController extends Controller
             $log = $this->suketLogNotifikasi($sksj,'sksj','Verifikasi','Pengajuan Surat Keterangan Sapu Jagat telah di verifikasi Oleh Operator Desa','operator','terima');
 
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Sapu Jagat disetujui oleh operator desa');
-
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
 
             return redirect()->route('backend.dokumen.sksj');
 
         }catch(\QueryBuilder $e){
-
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
 
             return back();

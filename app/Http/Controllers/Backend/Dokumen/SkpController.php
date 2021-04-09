@@ -20,6 +20,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SkpController extends Controller
 {
@@ -58,6 +59,7 @@ class SkpController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -65,15 +67,17 @@ class SkpController extends Controller
             $data['status'] = '1';
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
             $skp = SKP::create($data);
+            $generateFile = (new GenerateFileAction)->run($skp->id,'skp');
 
             $log = $this->suketLogNotifikasi($skp,'skp','Verifikasi','Pengajuan Surat Keterangan Penghasilan Telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Penghasilan disetujui oleh operator desa ');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skp,'skp'));
-
+            DB::commit();
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.skp.detail',['id'=>$skp->encodeHash($skp->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -96,6 +100,7 @@ class SkpController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -103,14 +108,16 @@ class SkpController extends Controller
             $data = $this->bindData($request);
             $skp = SKP::find($id);
             $skp->update($data);
+            $generateFile = (new GenerateFileAction)->run($skp->id,'skp');
 
             $log = $this->suketLogNotifikasi($skp,'skp','Verifikasi','Pengajuan Surat Keterangan Penghasilan Telah di verifikasi Oleh Operator Desa','operator','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skp,'skp'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.skp.detail',['id'=>$skp->encodeHash($skp->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -347,6 +354,7 @@ class SkpController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skp = SKP::find($id);
@@ -376,7 +384,7 @@ class SkpController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Penghasilan disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','operator')->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skp,'skp'));
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skp');
             }else{
@@ -384,6 +392,7 @@ class SkpController extends Controller
                 return redirect()->route('backend.dokumen.skp.detail',['id'=>$skp->encodeHash($skp->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -391,6 +400,7 @@ class SkpController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skp = SKP::find($id);
@@ -401,10 +411,11 @@ class SkpController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Penghasilan disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','kepala_desa')->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skp,'skp'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skp');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -412,6 +423,7 @@ class SkpController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skp = SKP::find($id);
@@ -421,11 +433,12 @@ class SkpController extends Controller
             $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Penghasilan disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','sekretaris_desa')->first();
-            
+            DB::commit();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skp,'skp'));
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skp');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -433,6 +446,7 @@ class SkpController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skp = SKP::find($id);
@@ -453,10 +467,11 @@ class SkpController extends Controller
             }
 
             $skp->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.skp');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -464,6 +479,7 @@ class SkpController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skp =SKP::find($id);
@@ -482,8 +498,10 @@ class SkpController extends Controller
 
             $log = $this->suketLogNotifikasi($skp,'skp','Penolakan',$request->pesan,'operator','tolak');
             toastr()->success('Data Berhasil Ditolak','Sukses');
+            DB::commit();
             return redirect()->route('backend.dokumen.skp');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -491,6 +509,7 @@ class SkpController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skp =SKP::find($id);
@@ -515,9 +534,11 @@ class SkpController extends Controller
             $skp->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($skp,'skp','Verifikasi','Pengajuan Surat Keterangan Penghasilan telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Penghasilan disetujui oleh operator desa ');
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skp');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }

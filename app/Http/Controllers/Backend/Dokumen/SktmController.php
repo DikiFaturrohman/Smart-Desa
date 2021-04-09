@@ -19,6 +19,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SktmController extends Controller
 {
@@ -56,6 +57,7 @@ class SktmController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -63,15 +65,16 @@ class SktmController extends Controller
             $data['status'] = '1';
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
             $sktm =SKTM::create($data);
-           
+            $generateFile = (new GenerateFileAction)->run($sktm->id,'sktm');
             $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh operator desa');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
-
+            DB::commit();
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.sktm.detail',['id'=>$sktm->encodeHash($sktm->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -93,6 +96,7 @@ class SktmController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -100,14 +104,15 @@ class SktmController extends Controller
             $data = $this->bindData($request);
             $sktm = SKTM::find($id);
             $sktm->update($data);
-           
+            $generateFile = (new GenerateFileAction)->run($sktm->id,'sktm');
             $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.sktm.detail',['id'=>$sktm->encodeHash($sktm->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -373,6 +378,7 @@ class SktmController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -403,7 +409,7 @@ class SktmController extends Controller
                 $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','operator')->where('desa_id',Session::get('desa_id'))->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.sktm');
             }else{
@@ -411,6 +417,7 @@ class SktmController extends Controller
                 return redirect()->route('backend.dokumen.sktm.detail',['id'=>$sktm->encodeHash($sktm->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -418,6 +425,7 @@ class SktmController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -428,10 +436,11 @@ class SktmController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sktm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -439,6 +448,7 @@ class SktmController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -449,10 +459,11 @@ class SktmController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sktm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -460,6 +471,7 @@ class SktmController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -480,7 +492,7 @@ class SktmController extends Controller
             }
 
             $sktm->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.sktm');
         }catch(\QueryBuilder $e){
@@ -491,6 +503,7 @@ class SktmController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -509,6 +522,7 @@ class SktmController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $log = $this->suketLogNotifikasi($sktm,'sktm','Penolakan',$request->pesan,'operator','tolak');
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.sktm');
         }catch(\QueryBuilder $e){
@@ -519,6 +533,7 @@ class SktmController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -543,9 +558,11 @@ class SktmController extends Controller
             $sktm->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh operator desa');
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sktm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }

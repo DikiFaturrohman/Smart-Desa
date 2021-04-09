@@ -19,6 +19,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SkrtController extends Controller
 {
@@ -56,6 +57,7 @@ class SkrtController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -63,15 +65,17 @@ class SkrtController extends Controller
             $data['status'] = '1';
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
             $skrt = SKRT::create($data);
+            $generateFile = (new GenerateFileAction)->run($skrt->id,'skrt');
 
             $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh operator desa');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
-
+            DB::commit();
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.skrt.detail',['id'=>$skrt->encodeHash($skrt->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -93,6 +97,7 @@ class SkrtController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -101,14 +106,16 @@ class SkrtController extends Controller
             $data['status'] = '1';
             $skrt =  SKRT::find($id);
             $skrt->update($data);
+            $generateFile = (new GenerateFileAction)->run($skrt->id,'skrt');
             
             $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Operator Desa','operator','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.skrt.detail',['id'=>$skrt->encodeHash($skrt->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -459,6 +466,7 @@ class SkrtController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt =  SKRT::find($id);
@@ -488,7 +496,7 @@ class SkrtController extends Controller
                 $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','operator')->where('desa_id',Session::get('desa_id'))->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skrt');
             }else{
@@ -496,6 +504,7 @@ class SkrtController extends Controller
                 return redirect()->route('backend.dokumen.skrt.detail',['id'=>$skrt->encodeHash($skrt->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -503,6 +512,7 @@ class SkrtController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt =  SKRT::find($id);
@@ -513,10 +523,11 @@ class SkrtController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skrt');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -524,6 +535,7 @@ class SkrtController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt =  SKRT::find($id);
@@ -534,10 +546,11 @@ class SkrtController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skrt');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -545,6 +558,7 @@ class SkrtController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt =  SKRT::find($id);
@@ -573,10 +587,11 @@ class SkrtController extends Controller
             }
 
             $skrt->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.skrt');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -584,6 +599,7 @@ class SkrtController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt = SKRT::find($id);
@@ -602,9 +618,11 @@ class SkrtController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $log = $this->suketLogNotifikasi($skrt,'skrt','Penolakan',$request->pesan,'operator','tolak');
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skrt');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -612,6 +630,7 @@ class SkrtController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt = SKRT::find($id);
@@ -636,9 +655,11 @@ class SkrtController extends Controller
             $skrt->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh operator desa');
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skrt');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }

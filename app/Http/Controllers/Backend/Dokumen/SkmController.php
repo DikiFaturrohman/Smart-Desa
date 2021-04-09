@@ -24,6 +24,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SkmController extends Controller
 {
@@ -63,6 +64,7 @@ class SkmController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -70,15 +72,17 @@ class SkmController extends Controller
             $data['status'] = '1';
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
             $skm = SKM::create($data);
+            $generateFile = (new GenerateFileAction)->run($skm->id,'skm');
 
             $log = $this->suketLogNotifikasi($skm,'skm','Verifikasi','Pengajuan Surat Keterangan Kematian Telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Kematian disetujui oleh operator desa ');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skm,'skm'));
-            
+            DB::commit();
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.skm.detail',['id'=>$skm->encodeHash($skm->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -105,6 +109,7 @@ class SkmController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -113,14 +118,16 @@ class SkmController extends Controller
             $data['status'] ='1';
             $skm = SKM::find($id);
             $skm->update($data);
+            $generateFile = (new GenerateFileAction)->run($skm->id,'skm');
 
             $log = $this->suketLogNotifikasi($skm,'skm','Verifikasi','Pengajuan Surat Keterangan Kematian Telah di verifikasi Oleh Operator Desa','operator','terima','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skm,'skm'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.skm.detail',['id'=>$skm->encodeHash($skm->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -499,6 +506,7 @@ class SkmController extends Controller
 
     public function print(Request $request)
     {
+        
         try{
             $id = $this->decodeHash($request->id);
             $dokumen = \App\Models\Dokumen::where('suket_id',$id)->where('jenis','skm')->first();
@@ -519,6 +527,7 @@ class SkmController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skm = SKM::find($id);
@@ -549,7 +558,7 @@ class SkmController extends Controller
                 $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Kematian disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','operator')->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skm,'skm'));
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skm');
             }else{
@@ -557,6 +566,7 @@ class SkmController extends Controller
                 return redirect()->route('backend.dokumen.skm.detail',['id'=>$skm->encodeHash($skm->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -564,6 +574,7 @@ class SkmController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skm = SKM::find($id);
@@ -574,10 +585,11 @@ class SkmController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Kematian disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','kepala_desa')->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skm,'skm'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -585,6 +597,7 @@ class SkmController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skm = SKM::find($id);
@@ -594,11 +607,12 @@ class SkmController extends Controller
             $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Kematian disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','sekretaris_desa')->first();
-            
+            DB::commit();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skm,'skm'));
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -606,6 +620,7 @@ class SkmController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skm = SKM::find($id);
@@ -626,10 +641,11 @@ class SkmController extends Controller
             }
 
             $skm->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.skm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -637,6 +653,7 @@ class SkmController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skm = SKM::find($id);
@@ -653,9 +670,11 @@ class SkmController extends Controller
 
             $this->validate($request,$rules,$messages,$label);
             $log = $this->suketLogNotifikasi($skm,'skm','Penolakan',$request->pesan,'operator','tolak');
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -663,6 +682,7 @@ class SkmController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skm = SKM::find($id);
@@ -687,9 +707,11 @@ class SkmController extends Controller
             $skm->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($skm,'skm','Verifikasi','Pengajuan Surat Keterangan Kematian telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Kematian disetujui oleh operator desa ');
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skm');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }

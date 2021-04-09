@@ -20,6 +20,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SkbnController extends Controller
 {
@@ -57,6 +58,7 @@ class SkbnController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -77,13 +79,17 @@ class SkbnController extends Controller
                 $skbnDetail = SKBNDetail::create($detail);
             }
 
+            $generateFile = (new GenerateFileAction)->run($skbn->id,'skbn');
+
             $log = $this->suketLogNotifikasi($skbn,'skbn','Verifikasi','Pengajuan Surat Keterangan Beda Nama Telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Beda Nama disetujui oleh operator desa ');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skbn,'skbn'));
+            DB::commit();
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.skbn.detail',['id'=>$skbn->encodeHash($skbn->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -105,6 +111,7 @@ class SkbnController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -123,14 +130,16 @@ class SkbnController extends Controller
 
                 $skbnDetail = SKBNDetail::where('id',$request->skbn_id[$i])->update($detail);
             }
+            $generateFile = (new GenerateFileAction)->run($skbn->id,'skbn');
 
             $log = $this->suketLogNotifikasi($skbn,'skbn','Verifikasi','Pengajuan Surat Keterangan Beda Nama Telah di verifikasi Oleh Operator Desa','operator','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skbn,'skbn'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.skbn.detail',['id'=>$skbn->encodeHash($skbn->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -341,6 +350,7 @@ class SkbnController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skbn = SKBN::find($id);
@@ -371,7 +381,7 @@ class SkbnController extends Controller
                 $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Beda Nama disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','operator')->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skbn,'skbn'));
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skbn');
             }else{
@@ -379,6 +389,7 @@ class SkbnController extends Controller
                 return redirect()->route('backend.dokumen.skbn.detail',['id'=>$skbn->encodeHash($skbn->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -386,6 +397,7 @@ class SkbnController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skbn = SKBN::find($id);
@@ -396,10 +408,11 @@ class SkbnController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Beda Nama disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','kepala_desa')->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skbn,'skbn'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skbn');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -407,6 +420,7 @@ class SkbnController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skbn = SKBN::find($id);
@@ -416,11 +430,12 @@ class SkbnController extends Controller
             $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Beda Nama disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','sekretaris_desa')->first();
-            
+            DB::commit();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skbn,'skbn'));
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skbn');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -428,6 +443,7 @@ class SkbnController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skbn = SKBN::find($id);
@@ -448,10 +464,11 @@ class SkbnController extends Controller
             }
 
             $skbn->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.skbn');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -459,6 +476,7 @@ class SkbnController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skbn = SKBN::find($id);
@@ -476,9 +494,11 @@ class SkbnController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $log = $this->suketLogNotifikasi($skbn,'skbn','Penolakan',$request->pesan,'operator','tolak');
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skbn');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -486,6 +506,7 @@ class SkbnController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skbn = SKBN::find($id);
@@ -510,9 +531,11 @@ class SkbnController extends Controller
             $skbn->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($skbn,'skbn','Verifikasi','Pengajuan Surat Keterangan Beda Nama telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Beda Nama disetujui oleh operator desa ');
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skbn');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }

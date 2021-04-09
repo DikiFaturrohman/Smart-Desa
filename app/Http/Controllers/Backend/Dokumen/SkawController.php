@@ -22,6 +22,7 @@ use Mail;
 use Validator;
 use Session;
 use App\Actions\PassphraseLogAction;
+use DB;
 
 class SkawController extends Controller
 {
@@ -60,6 +61,7 @@ class SkawController extends Controller
 
     public function createProccess(Request $request)
     {
+        DB::beginTransaction();
         try{
             $this->validasiForm($request);
             $data = $this->bindData($request);
@@ -67,6 +69,7 @@ class SkawController extends Controller
             $data['status'] = '1';
             $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
             $skaw =SKAW::create($data);
+            $generateFile = (new GenerateFileAction)->run($skaw->id,'skaw');
 
             $anak = $this->insertMultipleAnak($skaw,$request);
             $pasangan = $this->insertMultiplePasangan($skaw,$request);
@@ -74,6 +77,7 @@ class SkawController extends Controller
             $log = $this->suketLogNotifikasi($skaw,'skaw','Verifikasi','Pengajuan Surat Keterangan Ahli Waris telah di verifikasi Oleh Operator Desa','operator','terima');
 
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Ahli Waris disetujui oleh operator desa ');
+            DB::commit();
 
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skaw,'skaw'));
@@ -81,6 +85,8 @@ class SkawController extends Controller
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.skaw.detail',['id'=>$skaw->encodeHash($skaw->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
+
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -103,6 +109,7 @@ class SkawController extends Controller
 
     public function editProccess(Request $request,$id)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($id);
             $request['id'] = $id;
@@ -110,14 +117,16 @@ class SkawController extends Controller
             $data = $this->bindData($request);
             $skaw = SKAW::find($id);
             $skaw->update($data);
+            $generateFile = (new GenerateFileAction)->run($skaw->id,'skaw');
            
             $log = $this->suketLogNotifikasi($skaw,'skaw','Verifikasi','Pengajuan Surat Keterangan Ahli Waris telah di verifikasi Oleh Operator Desa','operator','terima');
-
+            DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skaw,'skaw'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.skaw.detail',['id'=>$skaw->encodeHash($skaw->id)]);
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -460,6 +469,7 @@ class SkawController extends Controller
 
     public function verifikasiKades(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skaw = SKAW::find($id);
@@ -488,7 +498,7 @@ class SkawController extends Controller
                 $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Ahli Waris disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','operator')->where('desa_id',Session::get('desa_id'))->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skaw,'skaw'));
-
+                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skaw');
             }else{
@@ -496,6 +506,7 @@ class SkawController extends Controller
                 return redirect()->route('backend.dokumen.skaw.detail',['id'=>$skaw->encodeHash($skaw->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -503,6 +514,7 @@ class SkawController extends Controller
 
     public function verifikasiSekdes(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skaw = SKAW::find($id);
@@ -513,10 +525,11 @@ class SkawController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Ahli Waris disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skaw,'skaw'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skaw');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -524,6 +537,7 @@ class SkawController extends Controller
 
     public function verifikasiKasi(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skaw = SKAW::find($id);
@@ -534,10 +548,11 @@ class SkawController extends Controller
             $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Ahli Waris disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skaw,'skaw'));
-
+            DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skaw');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -545,6 +560,7 @@ class SkawController extends Controller
 
     public function delete(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skaw = SKAW::find($id);
@@ -581,10 +597,11 @@ class SkawController extends Controller
             }
 
             $skaw->delete();
-
+            DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
             return redirect()->route('backend.dokumen.skaw');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -646,6 +663,7 @@ class SkawController extends Controller
 
     public function rejected(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skaw = SKAW::find($id);
@@ -662,9 +680,11 @@ class SkawController extends Controller
 
             $this->validate($request,$rules,$messages,$label);
             $log = $this->suketLogNotifikasi($skaw,'skaw','Penolakan',$request->pesan,'operator','tolak');
+            DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skaw');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -672,6 +692,7 @@ class SkawController extends Controller
 
     public function accepted(Request $request)
     {
+        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skaw = SKAW::find($id);
@@ -696,10 +717,11 @@ class SkawController extends Controller
             $skaw->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
             $log = $this->suketLogNotifikasi($skaw,'skaw','Verifikasi','Pengajuan Surat Keterangan Ahli Waris telah di verifikasi Oleh Operator Desa','operator','terima');
             $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Ahli Waris disetujui oleh operator desa ');
-
+            DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skaw');
         }catch(\QueryBuilder $e){
+            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
