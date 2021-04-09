@@ -791,9 +791,8 @@
         <div class="footer">
             <table>
                 <tr>
-                    <td style="width:10%">
-                        <span><img src="data:image/png;base64, {!! base64_encode($barcode) !!}" width="auto"
-                                height="45px"></span></td>
+                    <td style="width:10%"><img src="data:image/png;base64, {!! base64_encode($barcode) !!}"
+                                height="45px"></td>
                     <td style="width:90%">Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat
                         elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik, Badan Siber dan Sandi Negara.
                         Tidak
