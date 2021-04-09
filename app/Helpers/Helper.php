@@ -3,7 +3,7 @@
 
 function url_server()
 {
-    if(app("env")=='productin')
+    if(app("env")=='production')
     {
         $server = 'http://192.168.18.27';
     }else{
