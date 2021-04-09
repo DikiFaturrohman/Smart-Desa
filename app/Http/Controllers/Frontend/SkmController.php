@@ -564,7 +564,7 @@ class SkmController extends Controller
                     }
                 $ktp_pelapor = $request->file('file_ktp_pelapor');
                 $destinationPathPelapor = public_path('backend/images/dokumen/skm/ktp_pelapor');
-                $nama_ktp_pelapor = 'skm_pelapor_'.strtolower(str_replace(' ','_',$request->nama_jenazah)).'.'.'_'.date('YmdHis').'.'.$ktp_pelapor->getClientOriginalExtension();
+                $nama_ktp_pelapor = 'skm_pelapor_'.strtolower(str_replace(' ','_',$request->nama_jenazah)).'_'.date('YmdHis').'.'.$ktp_pelapor->getClientOriginalExtension();
             }else{
                     $nama_ktp_pelapor=$skm->file_ktp_pelapor;
             }
@@ -575,7 +575,7 @@ class SkmController extends Controller
                     }
                 $ktp_alm = $request->file('file_ktp_alm');
                 $destinationPathAlm = public_path('backend/images/dokumen/skm/ktp_alm');
-                $nama_ktp_alm = 'skm_ktp'.strtolower(str_replace(' ','_',$request->nama_jenazah)).'.'.'_'.date('YmdHis').'.'.$ktp_alm->getClientOriginalExtension();
+                $nama_ktp_alm = 'skm_ktp'.strtolower(str_replace(' ','_',$request->nama_jenazah)).'_'.date('YmdHis').'.'.$ktp_alm->getClientOriginalExtension();
             }else{
                     $nama_ktp_alm=$skm->file_ktp_alm;
             }

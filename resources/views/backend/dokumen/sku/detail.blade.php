@@ -183,26 +183,26 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('storage/backend/images/dokumen/sku/rtrw/'.$sku->file_sp_rtrw)}}" target="_blank" >
-                                <img src="{{asset('storage/backend/images/dokumen/sku/rtrw/'.$sku->file_sp_rtrw)}}" width="200px"></a>
+                                <a href="{{asset('backend/images/dokumen/sku/rtrw/'.$sku->file_sp_rtrw)}}" target="_blank" >
+                                <img src="{{asset('backend/images/dokumen/sku/rtrw/'.$sku->file_sp_rtrw)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('storage/backend/images/dokumen/sku/ktp/'.$sku->file_ktp)}}" target="_blank"><img src="{{asset('storage/backend/images/dokumen/sku/ktp/'.$sku->file_ktp)}}" width="200px"></a>
+                                <a href="{{asset('backend/images/dokumen/sku/ktp/'.$sku->file_ktp)}}" target="_blank"><img src="{{asset('backend/images/dokumen/sku/ktp/'.$sku->file_ktp)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('storage/backend/images/dokumen/sku/kk/'.$sku->file_kk)}}" target="_blank" width="200px"><img src="{{asset('storage/backend/images/dokumen/sku/kk/'.$sku->file_kk)}}" width="200px"></a>
+                                <a href="{{asset('backend/images/dokumen/sku/kk/'.$sku->file_kk)}}" target="_blank" width="200px"><img src="{{asset('backend/images/dokumen/sku/kk/'.$sku->file_kk)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('storage/backend/images/dokumen/sku/surat_pernyataan/'.$sku->file_surat_pernyataan)}}" target="_blank" width="200px"><img src="{{asset('storage/backend/images/dokumen/sku/surat_pernyataan/'.$sku->file_surat_pernyataan)}}" width="200px"></a>
+                                <a href="{{asset('backend/images/dokumen/sku/surat_pernyataan/'.$sku->file_surat_pernyataan)}}" target="_blank" width="200px"><img src="{{asset('backend/images/dokumen/sku/surat_pernyataan/'.$sku->file_surat_pernyataan)}}" width="200px"></a>
                             </div>
                         </div>
                     </div>

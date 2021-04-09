@@ -271,7 +271,7 @@ class SksjController extends Controller
                 }
                 $ktp = $request->file('file_ktp');
                 $destinationPathKtp = public_path('backend/images/dokumen/sksj/ktp');
-                $nama_ktp = 'sksj_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
+                $nama_ktp = 'sksj_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$ktp->getClientOriginalExtension();
             }else{
                 $nama_ktp = $sksj->file_ktp;
             }

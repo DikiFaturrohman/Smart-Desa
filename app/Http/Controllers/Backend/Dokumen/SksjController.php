@@ -503,7 +503,7 @@ class SksjController extends Controller
 
             $destinationPath = public_path('backend/images/dokumen/sksj/ktp');
 
-            $nama_ktp = 'sksj_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'.'.'_'.date('YmdHis').$ktp->getClientOriginalExtension();
+            $nama_ktp = 'sksj_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').$ktp->getClientOriginalExtension();
 
             $ktp->move($destinationPath,$nama_ktp);
 

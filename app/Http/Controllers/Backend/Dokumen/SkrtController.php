@@ -320,7 +320,7 @@ class SkrtController extends Controller
             }
             $ktp = $request->file('ktp');
             $destinationPath = public_path('backend/images/dokumen/skrt/ktp');
-            $nama_ktp = 'skrt_ktp_'.strtolower(str_replace(' ','_',$request->nama_pemilik)).'.'.'_'.date('YmdHis').$ktp->getClientOriginalExtension();
+            $nama_ktp = 'skrt_ktp_'.strtolower(str_replace(' ','_',$request->nama_pemilik)).'_'.date('YmdHis').$ktp->getClientOriginalExtension();
             $ktp->move($destinationPath,$nama_ktp);
         }else{
             if($request->id){
@@ -336,7 +336,7 @@ class SkrtController extends Controller
             }
             $kk = $request->file('kk');
             $destinationPath = public_path('backend/images/dokumen/skrt/kk');
-            $nama_kk = 'skrt_kk_'.strtolower(str_replace(' ','_',$request->nama_pemilik)).'.'.'_'.date('YmdHis').$kk->getClientOriginalExtension();
+            $nama_kk = 'skrt_kk_'.strtolower(str_replace(' ','_',$request->nama_pemilik)).'_'.date('YmdHis').$kk->getClientOriginalExtension();
             $kk->move($destinationPath,$nama_kk);
         }else{
             if($request->id){
