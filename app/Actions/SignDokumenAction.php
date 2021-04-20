@@ -48,7 +48,7 @@ class SignDokumenAction {
             $pathFile = public_path('storage/surat/'.$tipe.'/'.$namaFile);
             $curl = curl_init();
             $post = [
-                'file' => curl_file_create($pathFile,'application/pdf'),
+                'file' => curl_file_create($pathFile,'application/pdf',$namaFile),
                 'nik' => $nik,
                 'passphrase' => $passphrase,
                 'tampilan' => 'invisible',
@@ -70,15 +70,20 @@ class SignDokumenAction {
             ));
     
             $response = curl_exec($curl);
+            $resp = json_decode($response);
             $err = curl_error($curl);
             curl_close($curl);
-            
             if ($err) {
-                echo "cURL Error #:" . $err;
+                return "cURL Error #:" . $err;
             } else {
-                header('Content-type: application/pdf');
-                \Storage::put('surat/'.$tipe.'/'.$namaFile,$response);
-         		return 'berhasil';
+                if(!empty($resp->error)){
+                    return $resp->error;
+                }else{
+                    header('Content-type: application/pdf');
+                    \Storage::put('surat/'.$tipe.'/'.$namaFile,$response);
+                    return 'berhasil';
+                }
+                
             }
         }
     }

@@ -377,12 +377,16 @@ class DataController extends Controller
 
             header('Content-type: application/pdf');
             \Storage::put('surat/'.$request->tipe.'/'.$request->nama,$request->dokumen);
-             return 'Dokumen Sukses Disimpan';
+            return response()->json([
+                'status' => true,
+                'data' => '',
+                'message' => 'Dokumen berhasil disimpan'
+            ]);
         }catch(\QueryBuilder $e){
             return response()->json([
                 'status' => false,
                 'data' => '',
-                'pesan' => $e->getMessage()
+                'message' => $e->getMessage()
             ]);
         }
     }
