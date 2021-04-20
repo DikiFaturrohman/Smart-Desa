@@ -52,7 +52,7 @@ class SignDokumenAction {
                 'nik' => $nik,
                 'passphrase' => $passphrase,
                 'tampilan' => 'invisible',
-                'jenis_response' => 'BASE64'
+                'jenis_response' => 'BYTE'
             ];
             curl_setopt_array($curl, array(
             CURLOPT_URL => url_server()."/api/sign/pdf",
@@ -71,20 +71,14 @@ class SignDokumenAction {
     
             $response = curl_exec($curl);
             $err = curl_error($curl);
-    
             curl_close($curl);
-            $resp = json_decode($response);
             
             if ($err) {
                 echo "cURL Error #:" . $err;
             } else {
-                if(empty($resp->error)){
-                    (new DownloadDokumenAction)->run($resp->id_dokumen,$namaFile,$tipe);
-                    return 'berhasil';
-                }else{
-                    return $resp->error;
-                }
-                
+                header('Content-type: application/pdf');
+                \Storage::put('surat/'.$tipe.'/'.$namaFile,$response);
+         		return 'Dokumen Sukses Disimpan';
             }
         }
     }
