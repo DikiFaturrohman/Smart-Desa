@@ -78,7 +78,7 @@ class SignDokumenAction {
             } else {
                 header('Content-type: application/pdf');
                 \Storage::put('surat/'.$tipe.'/'.$namaFile,$response);
-         		return 'Dokumen Sukses Disimpan';
+         		return 'berhasil';
             }
         }
     }
