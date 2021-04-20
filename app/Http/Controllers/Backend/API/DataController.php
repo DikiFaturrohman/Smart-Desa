@@ -374,14 +374,10 @@ class DataController extends Controller
 	public function upload(Request $request)
     {
     	try{
-        	$dokumen = (new DownloadDokumenAction)->run($request->id_dokumen,$request->nama,$request->tipe);
-        
-        	if($dokumen){
-            	return 'berhasil';
-            }else{
-            	return 'gagal';
-            }
-            
+
+            header('Content-type: application/pdf');
+            \Storage::put('surat/'.$request->tipe.'/'.$request->nama,$request->dokumen);
+             return 'Dokumen Sukses Disimpan';
         }catch(\QueryBuilder $e){
             return response()->json([
                 'status' => false,
