@@ -71,6 +71,6 @@ class GenerateFileAction {
             ]);
         }
         
-        \Storage::put('public/surat/'.$tipe.'/'.$namaFile,$output);
+        \Storage::put('surat/'.$tipe.'/'.$namaFile,$output);
     }
 }
