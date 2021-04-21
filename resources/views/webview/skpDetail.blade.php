@@ -104,7 +104,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skp/slip_gaji/'.$skp->slip_gaji)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skp/slip_gaji/'.$skp->slip_gaji)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skp/ktp/'.$skp->file_ktp)}}"
+                                        data-image="{{asset('storage/backend/images/uploads/'.$skp->file_ktp)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -124,7 +124,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skp/kk/'.$skp->file_kk)}}"
+                                        data-image="{{asset('storage/backend/images/uploads/'.$skp->file_kk)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skp/surat_pernyataan/'.$skp->file_surat_pernyataan)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skp/surat_pernyataan/'.$skp->file_surat_pernyataan)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>

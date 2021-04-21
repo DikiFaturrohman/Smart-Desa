@@ -93,7 +93,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/sksj/rtrw/'.$sksj->file_sp_rtrw)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/sksj/rtrw/'.$sksj->file_sp_rtrw)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/sksj/ktp/'.$sksj->file_ktp)}}"
+                                        data-image="{{asset('storage/backend/images/uploads/'.$sksj->file_ktp)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/sksj/surat_pernyataan/'.$sksj->file_surat_pernyataan)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/sksj/surat_pernyataan/'.$sksj->file_surat_pernyataan)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
