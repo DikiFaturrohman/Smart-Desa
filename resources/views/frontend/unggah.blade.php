@@ -51,7 +51,7 @@
             <label for="" class="col-sm-4 col-form-label">Scan/Foto KTP</label>
             <div class="col-sm-8 pl-2">
                 <div class="custom-file">
-                <input type="file" class="custom-file-input" name="file_ktp" id="file_ktp">
+                <input type="file" class="custom-file-input" name="file_ktp" id="file_ktp"  accept="image/jpg,image/jpeg,image/png">
                     <label class="custom-file-label" for="file_ktp">Unggah File</label>
                     @if($errors->has('file_ktp'))
                     <small class="text-danger">{{$errors->first('file_ktp')}}</small>
@@ -66,7 +66,7 @@
             <label for="" class="col-sm-4 col-form-label">Scan/Foto Kartu Keluarga</label>
             <div class="col-sm-8 pl-2">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="file_kk" id="file_kk">
+                    <input type="file" class="custom-file-input" name="file_kk" id="file_kk" accept="image/jpg,image/jpeg,image/png">
                     <label class="custom-file-label" for="file_kk">Unggah File</label>
                     @if($errors->has('file_kk'))
                     <small class="text-danger">{{$errors->first('file_kk')}}</small>
