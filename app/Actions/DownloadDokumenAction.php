@@ -42,7 +42,7 @@ class DownloadDokumenAction {
             return "cURL Error #:" . $err;
         } else {
                 header('Content-type: application/pdf');
-                \Storage::put('public/surat/'.$tipe.'/'.$namaFile,$response);
+                \Storage::put('surat/'.$tipe.'/'.$namaFile,$response);
          		return 'Dokumen Sukses Disimpan';
          
         }

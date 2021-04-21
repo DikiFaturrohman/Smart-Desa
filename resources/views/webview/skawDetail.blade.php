@@ -150,7 +150,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skaw/surat_permohonan/'.$skaw->file_surat_permohonan)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skaw/surat_permohonan/'.$skaw->file_surat_permohonan)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -159,7 +159,7 @@
                             <label class="col-sm-3 col-form-label">File Akta Lahir Ahli Waris</label>
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
-                                    <iframe src="{{asset('backend/images/dokumen/skaw/akta_lahir/'.$skaw->file_akta_lahir)}}" frameborder="0" width="100%" height="250px"></iframe>
+                                    <iframe src="{{asset('storage/backend/images/dokumen/skaw/akta_lahir/'.$skaw->file_akta_lahir)}}" frameborder="0" width="100%" height="250px"></iframe>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skaw/silsilah/'.$skaw->file_silsilah)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skaw/silsilah/'.$skaw->file_silsilah)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skaw/buku_nikah/'.$skaw->file_buku_nikah)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skaw/buku_nikah/'.$skaw->file_buku_nikah)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -188,7 +188,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skaw/sk_kematian/'.$skaw->file_sk_kematian)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skaw/sk_kematian/'.$skaw->file_sk_kematian)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP Alm</label>
                             <div class="col-sm-9">
-                                <iframe src="{{asset('backend/images/dokumen/skaw/ktp/'.$skaw->file_ktp)}}" frameborder="0" width="100%" height="250px"></iframe>
+                                <iframe src="{{asset('storage/backend/images/dokumen/skaw/ktp/'.$skaw->file_ktp)}}" frameborder="0" width="100%" height="250px"></iframe>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -204,7 +204,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skaw/kk/'.$skaw->file_kk)}}"
+                                        data-image="{{asset('storage/backend/images/uploads/'.$skaw->file_kk)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -214,7 +214,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skaw/surat_pernyataan/'.$skaw->file_surat_pernyataan)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skaw/surat_pernyataan/'.$skaw->file_surat_pernyataan)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>

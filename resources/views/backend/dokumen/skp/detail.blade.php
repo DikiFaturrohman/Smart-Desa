@@ -202,35 +202,35 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Slip Gaji</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skp/slip_gaji/'.$skp->slip_gaji)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skp/slip_gaji/'.$skp->slip_gaji)}}"
                                     target="_blank">
-                                    <img src="{{asset('backend/images/dokumen/skp/slip_gaji/'.$skp->slip_gaji)}}"
+                                    <img src="{{asset('storage/backend/images/dokumen/skp/slip_gaji/'.$skp->slip_gaji)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skp/ktp/'.$skp->file_ktp)}}"
+                                <a href="{{asset('storage/backend/images/uploads/'.$skp->file_ktp)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skp/ktp/'.$skp->file_ktp)}}"
+                                        src="{{asset('storage/backend/images/uploads/'.$skp->file_ktp)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skp/kk/'.$skp->file_kk)}}" target="_blank"
-                                    width="200px"><img src="{{asset('backend/images/dokumen/skp/kk/'.$skp->file_kk)}}"
+                                <a href="{{asset('storage/backend/images/uploads/'.$skp->file_kk)}}" target="_blank"
+                                    width="200px"><img src="{{asset('storage/backend/images/uploads/'.$skp->file_kk)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skp/surat_pernyataan/'.$skp->file_surat_pernyataan)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skp/surat_pernyataan/'.$skp->file_surat_pernyataan)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/skp/surat_pernyataan/'.$skp->file_surat_pernyataan)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skp/surat_pernyataan/'.$skp->file_surat_pernyataan)}}"
                                         width="200px"></a>
                             </div>
                         </div>

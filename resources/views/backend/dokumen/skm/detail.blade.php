@@ -449,36 +449,36 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File SK Rumah Sakit</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skm/sk_rs/'.$skm->file_sk_rs)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skm/sk_rs/'.$skm->file_sk_rs)}}"
                                     target="_blank">
-                                    <img src="{{asset('backend/images/dokumen/skm/sk_rs/'.$skm->file_sk_rs)}}"
+                                    <img src="{{asset('storage/backend/images/dokumen/skm/sk_rs/'.$skm->file_sk_rs)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP Alm</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skm/ktp_alm/'.$skm->file_ktp_alm)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skm/ktp_alm/'.$skm->file_ktp_alm)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skm/ktp_alm/'.$skm->file_ktp_alm)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skm/ktp_alm/'.$skm->file_ktp_alm)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP Pelapor</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skm/ktp_pelapor/'.$skm->file_ktp_pelapor)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skm/ktp_pelapor/'.$skm->file_ktp_pelapor)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/skm/ktp_pelapor/'.$skm->file_ktp_pelapor)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skm/ktp_pelapor/'.$skm->file_ktp_pelapor)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP Saksi</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skm/ktp_saksi/'.$skm->file_ktp_saksi)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skm/ktp_saksi/'.$skm->file_ktp_saksi)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/skm/ktp_saksi/'.$skm->file_ktp_saksi)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skm/ktp_saksi/'.$skm->file_ktp_saksi)}}"
                                         width="200px"></a>
                             </div>
                         </div>

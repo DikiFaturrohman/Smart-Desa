@@ -351,7 +351,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skm/sk_rs/'.$skm->file_sk_rs)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skm/sk_rs/'.$skm->file_sk_rs)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -361,7 +361,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skm/ktp_alm/'.$skm->file_ktp_alm)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skm/ktp_alm/'.$skm->file_ktp_alm)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -371,7 +371,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skm/ktp_pelapor/'.$skm->file_ktp_pelapor)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skm/ktp_pelapor/'.$skm->file_ktp_pelapor)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -381,7 +381,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skm/ktp_saksi/'.$skm->file_ktp_saksi)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skm/ktp_saksi/'.$skm->file_ktp_saksi)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>

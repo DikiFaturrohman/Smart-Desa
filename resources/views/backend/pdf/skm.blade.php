@@ -319,7 +319,7 @@
                                             <td>7.</td>
                                             <td>Pekerjaan</td>
                                             <td>:</td>
-                                            <td colspan="4">{{(#skm->pekerjaanJenazah->nama)??'-'}}</td>
+                                            <td colspan="4">{{($skm->pekerjaanJenazah->nama)??'-'}}</td>
                                         </tr>
                                         <tr>
                                             <td>8.</td>
@@ -373,7 +373,7 @@
                                             <td width="100px">Tanggal Kematian</td>
                                             <td width="10px">:</td>
                                             <td colspan="4">
-                                                {{\Carbon\Carbon::parse($skm->tgl_kematian)->tranaslatedFormat('d F Y')??'-'}}
+                                                {{\Carbon\Carbon::parse($skm->tgl_kematian)->translatedFormat('d F Y')??'-'}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -798,7 +798,7 @@
                         Tidak
                         perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen melalui
                         aplikasi
-                        VeryDS diplaystore atau kunjungi https://tte.kominfo.go.id/verifyPDF</td>
+                        VeryDS diplaystore atau kunjungi https://bsre.bssn.go.id/verifikasi</td>
                 </tr>
             </table>
         </div>

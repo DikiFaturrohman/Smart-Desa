@@ -9,7 +9,26 @@
             margin-top: 0px;
             padding-top: 0px;
         }
+        .halaman {
+            position: relative;
+            background-color: transparent;
+        }
 
+        .footer {
+            position: absolute;
+            bottom: 5px;
+            background-color: transparent;
+            text-align: center;
+            font-size: 10pt;
+            color: #3e3e3e;
+        }
+
+        .ttd {
+            width: 280px;
+            padding: 2px;
+            border: 1px solid #000;
+            margin: 0;
+        }
         table {
             width: 100%;
             border-spacing: 0;
@@ -548,6 +567,18 @@
                     <td colspan="3" class="tengah">Pelapor<br><br><br><br><br><br><br><br>({{($skk->nama_pelapor)??'-'}})</td>
                 </tr>
 
+            </table>
+        </div>
+        <div class="footer">
+            <table>
+                <tr>
+                    <td style="width:10%"><img src="{{asset('frontend/img/bsre.png')}}"
+                               height="45px"></td>
+                    <td style="width:90%">Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat
+                        elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik, Badan Siber dan Sandi Negara.
+                        Tidak perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen melalui
+                        aplikasi VeryDS diplaystore atau kunjungi https://bsre.bssn.go.id/verifikasi</td>
+                </tr>
             </table>
         </div>
     </div>

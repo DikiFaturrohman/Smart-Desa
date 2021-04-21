@@ -248,9 +248,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Permohonan</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skaw/surat_permohonan/'.$skaw->file_surat_permohonan)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skaw/surat_permohonan/'.$skaw->file_surat_permohonan)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skaw/surat_permohonan/'.$skaw->file_surat_permohonan)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skaw/surat_permohonan/'.$skaw->file_surat_permohonan)}}"
                                         width="200px"></a>
                             </div>
                         </div>
@@ -258,58 +258,58 @@
                             <label class="col-sm-3 col-form-label">File Akta Lahir Ahli Waris</label>
                             <div class="col-sm-9">
                                 <iframe
-                                    src="{{asset('backend/images/dokumen/skaw/akta_lahir/'.$skaw->file_akta_lahir)}}"
+                                    src="{{asset('storage/backend/images/dokumen/skaw/akta_lahir/'.$skaw->file_akta_lahir)}}"
                                     frameborder="0" width="100%" height="250px"></iframe>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Silsilah</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skaw/silsilah/'.$skaw->file_silsilah)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skaw/silsilah/'.$skaw->file_silsilah)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skaw/silsilah/'.$skaw->file_silsilah)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skaw/silsilah/'.$skaw->file_silsilah)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Buku Nikah</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skaw/buku_nikah/'.$skaw->file_buku_nikah)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skaw/buku_nikah/'.$skaw->file_buku_nikah)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skaw/buku_nikah/'.$skaw->file_buku_nikah)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skaw/buku_nikah/'.$skaw->file_buku_nikah)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Keterangan Kematian</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skaw/sk_kematian/'.$skaw->file_sk_kematian)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skaw/sk_kematian/'.$skaw->file_sk_kematian)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skaw/sk_kematian/'.$skaw->file_sk_kematian)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skaw/sk_kematian/'.$skaw->file_sk_kematian)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">File KTP Alm</label>
+                            <label class="col-sm-3 col-form-label">File KTP Ahli Waris</label>
                             <div class="col-sm-9">
-                                <iframe src="{{asset('backend/images/dokumen/skaw/ktp/'.$skaw->file_ktp)}}"
+                                <iframe src="{{asset('storage/backend/images/dokumen/skaw/ktp/'.$skaw->file_ktp)}}"
                                     frameborder="0" width="100%" height="250px"></iframe>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skaw/kk/'.$skaw->file_kk)}}" target="_blank"
-                                    width="200px"><img src="{{asset('backend/images/dokumen/skaw/kk/'.$skaw->file_kk)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skaw/kk/'.$skaw->file_kk)}}" target="_blank"
+                                    width="200px"><img src="{{asset('storage/backend/images/dokumen/skaw/kk/'.$skaw->file_kk)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skaw/surat_pernyataan/'.$skaw->file_surat_pernyataan)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skaw/surat_pernyataan/'.$skaw->file_surat_pernyataan)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/skaw/surat_pernyataan/'.$skaw->file_surat_pernyataan)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skaw/surat_pernyataan/'.$skaw->file_surat_pernyataan)}}"
                                         width="200px"></a>
                             </div>
                         </div>

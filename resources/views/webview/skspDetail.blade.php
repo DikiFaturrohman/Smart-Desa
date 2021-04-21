@@ -110,7 +110,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skn/rtrw/'.$skn->file_sp_rtrw)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skn/rtrw/'.$skn->file_sp_rtrw)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skn/ktp/'.$skn->file_ktp)}}"
+                                        data-image="{{asset('storage/backend/images/uploads/'.$skn->file_ktp)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skn/kk/'.$skn->file_kk)}}"
+                                        data-image="{{asset('storage/backend/images/uploads/'.$skn->file_kk)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skn/akta_cerai/'.$skn->file_akta_cerai)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skn/akta_cerai/'.$skn->file_akta_cerai)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>

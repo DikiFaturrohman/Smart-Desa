@@ -86,17 +86,17 @@
                 <tr>
                     <td style="width: 30%;">Nama</td>
                     <td style="width: 10px">:</td>
-                    <td style="width: 70%;">{{$sksj->nama_pejabat}}</td>
+                    <td style="width: 70%;">{{($sksj->nama_pejabat)??''}}</td>
                 </tr>
                 <tr>
                     <td>Jabatan</td>
                     <td>:</td>
-                    <td>{{$sksj->jabatan}}</td>
+                    <td>{{($sksj->jabatan)??''}}</td>
                 </tr>
                 <tr>
                     <td>Alamat Kantor</td>
                     <td>:</td>
-                    <td>{{$sksj->alamat}}</td>
+                    <td>{{($sksj->alamat)??''}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -208,7 +208,7 @@
                         Tidak
                         perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen melalui
                         aplikasi
-                        VeryDS diplaystore atau kunjungi https://tte.kominfo.go.id/verifyPDF</td>
+                        VeryDS diplaystore atau kunjungi https://bsre.bssn.go.id/verifikasi</td>
                 </tr>
             </table>
         </div>

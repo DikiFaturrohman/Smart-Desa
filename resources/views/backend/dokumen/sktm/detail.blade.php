@@ -234,35 +234,35 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)}}"
                                     target="_blank">
-                                    <img src="{{asset('backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)}}"
+                                    <img src="{{asset('storage/backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sktm/ktp/'.$sktm->file_ktp)}}"
+                                <a href="{{asset('storage/backend/images/uploads/'.$sktm->file_ktp)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/sktm/ktp/'.$sktm->file_ktp)}}"
+                                        src="{{asset('storage/backend/images/uploads/'.$sktm->file_ktp)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sktm/kk/'.$sktm->file_kk)}}" target="_blank"
-                                    width="200px"><img src="{{asset('backend/images/dokumen/sktm/kk/'.$sktm->file_kk)}}"
+                                <a href="{{asset('storage/backend/images/uploads/'.$sktm->file_kk)}}" target="_blank"
+                                    width="200px"><img src="{{asset('storage/backend/images/uploads/'.$sktm->file_kk)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)}}"
+                                        src="{{asset('storage/backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)}}"
                                         width="200px"></a>
                             </div>
                         </div>

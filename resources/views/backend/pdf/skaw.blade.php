@@ -10,6 +10,27 @@
             padding-top: 0px;
         }
 
+        .halaman {
+            position: relative;
+            background-color: transparent;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 5px;
+            background-color: transparent;
+            text-align: center;
+            font-size: 10pt;
+            color: #3e3e3e;
+        }
+
+        .ttd {
+            width: 280px;
+            padding: 2px;
+            border: 1px solid #000;
+            margin: 0;
+        }
+
         table {
             width: 100%;
         }
@@ -29,6 +50,7 @@
         .kopsurat {
             border-bottom: 4px groove #000;
         }
+
     </style>
 </head>
 
@@ -42,8 +64,11 @@
             <p class="text_content">Yang bertanda tangan di bawah ini kami ahli waris dan atau para ahli waris
                 Almarhum {{$skaw->nama_alm}} dengan ini menerangkan dan menyatakan bahwa seorang
                 {{$skaw->jk_alm}} yang bernama {{$skaw->nama_alm}} telah meninggal dunia
-                pada tanggal {{\Carbon\Carbon::parse($skaw->tgl_kematian)->translatedFormat('d F Y')}} di alamat {{$skaw->alamat}}
-                {{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}} {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower($desa->desa->nama))}} Kecamatan {{ucwords(strtolower($desa->desa->kecamatan->nama))}}
+                pada tanggal {{\Carbon\Carbon::parse($skaw->tgl_kematian)->translatedFormat('d F Y')}} di alamat
+                {{$skaw->alamat}}
+                {{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}
+                {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower($desa->desa->nama))}} Kecamatan
+                {{ucwords(strtolower($desa->desa->kecamatan->nama))}}
                 Kabupaten Subang yang juga sebagai tempat tinggalnya yang terakhir. Almarhum
                 {{$skaw->nama_alm}} semasa hidupnya pernah menikah secara sah dengan
                 {{$skaw->pasangan->first()->jk}} yang bernama :<br>
@@ -53,7 +78,8 @@
                 <ol>
                     <li>
                         {{$pasangan->nama}}, Lahir di {{$pasangan->tempat_lahir}}, pada
-                        tanggal {{\Carbon\Carbon::parse($pasangan->tgl_lahir)->translatedFormat('d F Y')}} Kewarganegaraan Indonesia, Pekerjaan
+                        tanggal {{\Carbon\Carbon::parse($pasangan->tgl_lahir)->translatedFormat('d F Y')}}
+                        Kewarganegaraan Indonesia, Pekerjaan
                         {{$pasangan->pekerjaan->nama}}
                     </li>
                 </ol>@endforeach
@@ -76,7 +102,8 @@
                     <td></td>
                     <td>Tempat, Tgl Lahir</td>
                     <td>:</td>
-                    <td>{{$anak->tempat_lahir}}, {{\Carbon\Carbon::parse($anak->tgl_lahir)->translatedFormat('d F Y')}}</td>
+                    <td>{{$anak->tempat_lahir}}, {{\Carbon\Carbon::parse($anak->tgl_lahir)->translatedFormat('d F Y')}}
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
@@ -142,7 +169,8 @@
             <br><br><br><br>
             <table>
                 <tr>
-                    <td class="tengah" colspan="2">Subang, {{\Carbon\Carbon::parse($skaw->finished_date)->translatedFormat('d F Y')}}<br><br><br></td>
+                    <td class="tengah" colspan="2">Subang,
+                        {{\Carbon\Carbon::parse($skaw->finished_date)->translatedFormat('d F Y')}}<br><br><br></td>
                 </tr>
                 <tr>
                     <td class="tengah">
@@ -157,10 +185,24 @@
                     <td class="tengah">
                         Disaksikan dan dibenarkan oleh kami :<br><br>
 
-                        {{($desa->desa->kecamatan->id == '2018110602402')?'LURAH':'KEPALA DESA'}} {{($desa)?ucwords(strtoupper($desa->nama)):strtoupper($desa->desa->nama)}} <br><br>
-                        <span><img src="data:image/png;base64, {!! base64_encode($barcode) !!} " width="100"></span><br><br>
+                        {{($desa->desa->kecamatan->id == '2018110602402')?'LURAH':'KEPALA DESA'}}
+                        {{($desa)?ucwords(strtoupper($desa->nama)):strtoupper($desa->desa->nama)}} <br><br>
+                        <span><img src="data:image/png;base64, {!! base64_encode($barcode) !!} "
+                                width="100"></span><br><br>
                         <u>{{$desa->kades}}</u>
                     </td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer">
+            <table>
+                <tr>
+                    <td style="width:10%"><img src="{{asset('frontend/img/bsre.png')}}"
+                            height="45px"></td>
+                    <td style="width:90%">Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat
+                        elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik, Badan Siber dan Sandi Negara.
+                        Tidak perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen melalui
+                        aplikasi VeryDS diplaystore atau kunjungi https://bsre.bssn.go.id/verifikasi</td>
                 </tr>
             </table>
         </div>

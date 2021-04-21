@@ -443,7 +443,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skk/sk_kelahiran/'.$skk->file_sk_kelahiran)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skk/sk_kelahiran/'.$skk->file_sk_kelahiran)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -453,7 +453,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skk/surat_nikah/'.$skk->file_surat_nikah)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skk/surat_nikah/'.$skk->file_surat_nikah)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -463,7 +463,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skk/kk/'.$skk->file_kk)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skk/kk/'.$skk->file_kk)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -473,7 +473,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skk/file_ayah/'.$skk->file_ayah)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skk/file_ayah/'.$skk->file_ayah)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
@@ -483,7 +483,7 @@
                             <div class="col-sm-9">
                                 <div class="gallery gallery-md">
                                     <div class="gallery-item"
-                                        data-image="{{asset('backend/images/dokumen/skk/file_ibu/'.$skk->file_ibu)}}"
+                                        data-image="{{asset('storage/backend/images/dokumen/skk/file_ibu/'.$skk->file_ibu)}}"
                                         data-title="Image 1"></div>
                                 </div>
                             </div>
