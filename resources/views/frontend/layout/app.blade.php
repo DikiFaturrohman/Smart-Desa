@@ -54,6 +54,8 @@
         }
 
     </style>
+    @livewireStyles
+    @livewireScripts
     @yield('top-resource')
     @toastr_css
 </head>
@@ -206,6 +208,16 @@
                 $(".preloader").remove(); //makes page Selengkapnya lightweight 
             });
         }
+
+        
+        Livewire.on('confirmation', function () {
+            $('#confirmation').modal("show")
+            // $('.modal-backdrop').remove();
+        });
+
+        Livewire.on('closeModal', function () {
+            $('#confirmation').modal("hide")
+        });
 
     </script>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e574b73280b5fb9"></script>

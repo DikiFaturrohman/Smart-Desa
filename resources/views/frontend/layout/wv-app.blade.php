@@ -33,7 +33,8 @@
     <link rel="stylesheet" href="{{asset('frontend/css/all.min.css')}}">
 
     <script src="{{asset('frontend/js/all.min.js')}}"></script>
-
+    @livewireStyles
+    @livewireScripts
     @yield('top-resource')
     @toastr_css
 </head>
