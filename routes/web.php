@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware('domain')->namespace('Frontend')->group(function () {
+    Route::get('/sukses',function(){
+        return view('webview.sukses');
+    })->name('frontend.success');
   	Route::get('/privacy-policy',function(){
       return view('frontend.privacy');
     });
@@ -185,6 +188,10 @@ Route::middleware('domain')->namespace('Frontend')->group(function () {
     Route::get('/suket/wv-skrt/detail','skrtController@detailWebView')->name('frontend.webview.skrt.detail');
     Route::get('/suket/wv-sku/detail','SkuController@detailWebView')->name('frontend.webview.sku.detail');
     Route::get('/suket/wv-skbn/detail','SkbnController@detailWebView')->name('frontend.webview.skbn.detail');
+
+    //Unggah dokumen kk dan ktp web
+    Route::get('/unggah-dokumen','UnggahDokumenController@index')->name('frontend.unggah');
+    Route::post('/unggah-dokumen','UnggahDokumenController@upload')->name('frontend.unggah.proses');
 });
 
 
