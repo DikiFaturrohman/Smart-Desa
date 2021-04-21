@@ -199,26 +199,26 @@ $('.operator').click(function () {
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skn/rtrw/'.$skn->file_sp_rtrw)}}" target="_blank" >
-                                <img src="{{asset('backend/images/dokumen/skn/rtrw/'.$skn->file_sp_rtrw)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/dokumen/skn/rtrw/'.$skn->file_sp_rtrw)}}" target="_blank" >
+                                <img src="{{asset('storage/backend/images/dokumen/skn/rtrw/'.$skn->file_sp_rtrw)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skn/ktp/'.$skn->file_ktp)}}" target="_blank"><img src="{{asset('backend/images/dokumen/skn/ktp/'.$skn->file_ktp)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/uploads/'.$skn->file_ktp)}}" target="_blank"><img src="{{asset('storage/backend/images/uploads/'.$skn->file_ktp)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skn/kk/'.$skn->file_kk)}}" target="_blank" width="200px"><img src="{{asset('backend/images/dokumen/skn/kk/'.$skn->file_kk)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/uploads/'.$skn->file_kk)}}" target="_blank" width="200px"><img src="{{asset('storage/backend/images/uploads/'.$skn->file_kk)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Akta Cerai</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skn/akta_cerai/'.$skn->file_akta_cerai)}}" target="_blank" width="200px"><img src="{{asset('backend/images/dokumen/skn/akta_cerai/'.$skn->file_akta_cerai)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/dokumen/skn/akta_cerai/'.$skn->file_akta_cerai)}}" target="_blank" width="200px"><img src="{{asset('storage/backend/images/dokumen/skn/akta_cerai/'.$skn->file_akta_cerai)}}" width="200px"></a>
                             </div>
                         </div>
                     </div>

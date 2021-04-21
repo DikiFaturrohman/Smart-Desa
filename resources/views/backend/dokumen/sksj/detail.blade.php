@@ -182,21 +182,21 @@ $('.operator').click(function () {
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sksj/rtrw/'.$sksj->file_sp_rtrw)}}" target="_blank" >
-                                <img src="{{asset('backend/images/dokumen/sksj/rtrw/'.$sksj->file_sp_rtrw)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/dokumen/sksj/rtrw/'.$sksj->file_sp_rtrw)}}" target="_blank" >
+                                <img src="{{asset('storage/backend/images/dokumen/sksj/rtrw/'.$sksj->file_sp_rtrw)}}" width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sksj/ktp/'.$sksj->file_ktp)}}" target="_blank"><img src="{{asset('backend/images/dokumen/sksj/ktp/'.$sksj->file_ktp)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/uploads/'.$sksj->file_ktp)}}" target="_blank"><img src="{{asset('storage/backend/images/uploads/'.$sksj->file_ktp)}}" width="200px"></a>
                             </div>
                         </div>
                        
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/sksj/surat_pernyataan/'.$sksj->file_surat_pernyataan)}}" target="_blank" width="200px"><img src="{{asset('backend/images/dokumen/sksj/surat_pernyataan/'.$sksj->file_surat_pernyataan)}}" width="200px"></a>
+                                <a href="{{asset('storage/backend/images/dokumen/sksj/surat_pernyataan/'.$sksj->file_surat_pernyataan)}}" target="_blank" width="200px"><img src="{{asset('storage/backend/images/dokumen/sksj/surat_pernyataan/'.$sksj->file_surat_pernyataan)}}" width="200px"></a>
                             </div>
                         </div>
                     </div>

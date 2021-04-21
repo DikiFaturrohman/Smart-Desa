@@ -541,44 +541,44 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File SK Kelahiran</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skk/sk_kelahiran/'.$skk->file_sk_kelahiran)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skk/sk_kelahiran/'.$skk->file_sk_kelahiran)}}"
                                     target="_blank">
-                                    <img src="{{asset('backend/images/dokumen/skk/sk_kelahiran/'.$skk->file_sk_kelahiran)}}"
+                                    <img src="{{asset('storage/backend/images/dokumen/skk/sk_kelahiran/'.$skk->file_sk_kelahiran)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Surat Nikah</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skk/surat_nikah/'.$skk->file_surat_nikah)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skk/surat_nikah/'.$skk->file_surat_nikah)}}"
                                     target="_blank"><img
-                                        src="{{asset('backend/images/dokumen/skk/surat_nikah/'.$skk->file_surat_nikah)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skk/surat_nikah/'.$skk->file_surat_nikah)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skk/kk/'.$skk->file_kk)}}" target="_blank"
-                                    width="200px"><img src="{{asset('backend/images/dokumen/skk/kk/'.$skk->file_kk)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skk/kk/'.$skk->file_kk)}}" target="_blank"
+                                    width="200px"><img src="{{asset('storage/backend/images/dokumen/skk/kk/'.$skk->file_kk)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP Ayah</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skk/file_ayah/'.$skk->file_ayah)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skk/file_ayah/'.$skk->file_ayah)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/skk/file_ayah/'.$skk->file_ayah)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skk/file_ayah/'.$skk->file_ayah)}}"
                                         width="200px"></a>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">File KTP Ibu</label>
                             <div class="col-sm-9">
-                                <a href="{{asset('backend/images/dokumen/skk/file_ibu/'.$skk->file_ibu)}}"
+                                <a href="{{asset('storage/backend/images/dokumen/skk/file_ibu/'.$skk->file_ibu)}}"
                                     target="_blank" width="200px"><img
-                                        src="{{asset('backend/images/dokumen/skk/file_ibu/'.$skk->file_ibu)}}"
+                                        src="{{asset('storage/backend/images/dokumen/skk/file_ibu/'.$skk->file_ibu)}}"
                                         width="200px"></a>
                             </div>
                         </div>
