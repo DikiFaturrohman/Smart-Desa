@@ -21,8 +21,11 @@ class UnggahDokumenController extends Controller
     public function indexWebView()
     {
         $user = User::where('api_token',request()->token)->first();
+        if(!$user){
+            toastr()->error('User tidak ditemukan','Gagal');
+            return back();
+        }
         $unggah = UnggahDokumen::where('user_id',$user->id)->first();
-        
         return view('webview.unggah',\compact('unggah','user'));
     }
 
