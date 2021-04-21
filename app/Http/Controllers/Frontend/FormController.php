@@ -78,7 +78,7 @@ class FormController extends Controller
         //
         // if ($request->file('file')) {
         //     $file = $request->file('file');
-        //     $destionationPath = public_path('backend/files/dokumen/dokumenPerencanaan');
+        //     $destionationPath = public_path('storage/backend/files/dokumen/dokumenPerencanaan');
         //     $nameFile = date('YmdHis') . "." . $file->getClientOriginalExtension();
         //     $file->move($destionationPath, $nameFile);
         // }else{
@@ -339,7 +339,7 @@ class FormController extends Controller
     try{
       if ($request->file('file_sp_rtrw')) {
           $filertrw = $request->file('file_sp_rtrw');
-          $destionationPath = public_path('backend/files/dokumen/status/');
+          $destionationPath = public_path('storage/backend/files/dokumen/status/');
           $namertrw = date('YmdHis') . "rtrw." . $filertrw->getClientOriginalExtension();
           $filertrw->move($destionationPath, $namertrw);
       }else{
@@ -347,7 +347,7 @@ class FormController extends Controller
       }
       if ($request->file('file_ktp')) {
           $filektp = $request->file('file_ktp');
-          $destionationPath = public_path('backend/files/dokumen/status/');
+          $destionationPath = public_path('storage/backend/files/dokumen/status/');
           $namektp = date('YmdHis') . "ktp." . $filektp->getClientOriginalExtension();
           $filektp->move($destionationPath, $namektp);
       }else{
@@ -355,7 +355,7 @@ class FormController extends Controller
       }
       if ($request->file('file_kk')) {
           $filekk = $request->file('file_kk');
-          $destionationPath = public_path('backend/files/dokumen/status/');
+          $destionationPath = public_path('storage/backend/files/dokumen/status/');
           $namekk = date('YmdHis') . "kk." . $filekk->getClientOriginalExtension();
           $filekk->move($destionationPath, $namekk);
       }else{
@@ -363,7 +363,7 @@ class FormController extends Controller
       }
       if ($request->file('file_akta_cerai')) {
           $fileac = $request->file('file_akta_cerai');
-          $destionationPath = public_path('backend/files/dokumen/status/');
+          $destionationPath = public_path('storage/backend/files/dokumen/status/');
           $nameac = date('YmdHis') . "cerai." . $fileac->getClientOriginalExtension();
           $fileac->move($destionationPath, $nameac);
       }else{
