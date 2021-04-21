@@ -208,7 +208,7 @@
                         Tidak
                         perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen melalui
                         aplikasi
-                        VeryDS diplaystore atau kunjungi https://tte.kominfo.go.id/verifyPDF</td>
+                        VeryDS diplaystore atau kunjungi https://bsre.bssn.go.id/verifikasi</td>
                 </tr>
             </table>
         </div>

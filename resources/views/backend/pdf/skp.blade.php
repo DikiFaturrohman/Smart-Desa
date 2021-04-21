@@ -210,7 +210,7 @@
                     <td style=" width:90%">Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat
                         elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik, Badan Siber dan Sandi Negara.
                         Tidak perlu ditandatangani lagi secara fisik oleh pihak terkait. Cek keabsahan dokumen
-                        melalui aplikasi VeryDS diplaystore atau kunjungi https://tte.kominfo.go.id/verifyPDF</td>
+                        melalui aplikasi VeryDS diplaystore atau kunjungi https://bsre.bssn.go.id/verifikasi</td>
                 </tr>
             </table>
         </div>
