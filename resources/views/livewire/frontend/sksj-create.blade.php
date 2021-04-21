@@ -138,5 +138,4 @@
         </div>
     </div>
     @endif
-    <div class="line"></div>
 </div>

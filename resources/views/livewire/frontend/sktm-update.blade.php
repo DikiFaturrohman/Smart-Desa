@@ -189,6 +189,7 @@
                 @endif
             </div>
         </div>
+        <div class="line"></div>
         <div class="row">
             <div class="col-lg-12">
                 <small class="w-100"> Keterangan: <span class="text-danger">*</span>) inputan wajib diisi </small>
@@ -213,5 +214,4 @@
         </div>
     </div>
     @endif
-    <div class="line"></div>
 </div>
