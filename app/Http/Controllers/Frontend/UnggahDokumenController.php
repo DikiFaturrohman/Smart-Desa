@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UnggahDokumen;
+use App\Models\User;
 use App\Actions\UnggahDokumenCreateAction;
 use App\Actions\UnggahDokumenUpdateAction;
 
@@ -13,12 +14,27 @@ class UnggahDokumenController extends Controller
     public function index()
     {
         $unggah = UnggahDokumen::where('user_id',current_user('masyarakat')->id)->first();
+        
         return view('frontend.unggah',\compact('unggah'));
+    }
+
+    public function indexWebView()
+    {
+        $user = User::where('api_token',request()->token)->first();
+        $unggah = UnggahDokumen::where('user_id',$user->id)->first();
+        
+        return view('webview.unggah',\compact('unggah','user'));
     }
 
     public function upload(Request $request)
     {
-        $unggah = UnggahDokumen::where('user_id',current_user('masyarakat')->id)->first();
+        $user = User::where('api_token',request()->token)->first();
+        if($user){
+            $unggah = UnggahDokumen::where('user_id',$user->id)->first();
+        }else{
+            $unggah = UnggahDokumen::where('user_id',current_user('masyarakat')->id)->first();
+        }
+        
 
         $validate = $this->validationForm($request,$unggah);
         

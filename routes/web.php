@@ -191,6 +191,7 @@ Route::middleware('domain')->namespace('Frontend')->group(function () {
 
     //Unggah dokumen kk dan ktp web
     Route::get('/unggah-dokumen','UnggahDokumenController@index')->name('frontend.unggah');
+    Route::get('/wv-unggah-dokumen','UnggahDokumenController@indexWebView')->name('frontend.webview.unggah');
     Route::post('/unggah-dokumen','UnggahDokumenController@upload')->name('frontend.unggah.proses');
 });
 

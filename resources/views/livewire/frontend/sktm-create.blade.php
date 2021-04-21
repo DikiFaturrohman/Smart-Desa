@@ -3,6 +3,7 @@
     <div class="line"></div>
     <!-- content -->
     @include('notification.unggah')
+    @if($user->unggahDokumen)
     <form method="post" enctype="multipart/form-data" id="mainform" wire:submit.prevent="store">
         {{csrf_field()}}
         <div class="form-group row">
@@ -185,16 +186,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <small class="w-100"> Keterangan: <span class="text-danger">*</span>) inputan wajib diisi </small>
-                @if($user->unggahDokumen)
                 <div class="spinner-grow text-dark float-right" role="status" wire:loading wire:target="store">
                 </div>
                 <button type="submit" id="tes" class="btn btn-gelap float-right" wire:click="store"
                     wire:loading.attr="disabled">KIRIM</button>
             </div>
-            @endif
             <!-- <button id="reset" class="btn btn-danger" style="margin-left:5px;margin-right:5px;">Reset</button> -->
         </div>
     </form>
+    @endif
     @if($errors->all())
     <br>
     <div class="col-sm-12 alert alert-danger alert-dismissible show fade">

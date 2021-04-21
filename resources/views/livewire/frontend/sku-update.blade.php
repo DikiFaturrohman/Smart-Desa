@@ -3,6 +3,7 @@
     <div class="line"></div>
     @include('notification.unggah')
     <!-- content -->
+    @if($user->unggahDokumen)
     <form wire:submit.prevent="update" method="post" type="multipart" id="mainform">
         <div class="form-group row">
             <label for="" class="col-sm-4 col-form-label">Scan/Foto Surat Pengantar RT/RW <span
@@ -144,16 +145,17 @@
         <div class="row">
             <div class="col-lg-12">
                 <small class="w-100"> Keterangan: <span class="text-danger">*</span>) inputan wajib diisi </small>
-                @if($user->unggahDokumen)
+                
                 <div class="spinner-grow text-dark float-right" role="status" wire:loading wire:target="update">
                 </div>
                 <button type="submit" id="tes" class="btn btn-gelap float-right" wire:click="update"
                     wire:loading.attr="disabled">KIRIM</button>
             </div>
-            @endif
+            
             <!-- <button id="reset" class="btn btn-danger" style="margin-left:5px;margin-right:5px;">Reset</button> -->
         </div>
     </form>
+    @endif
     @if($errors->all())
     <br>
     <div class="col-sm-12 alert alert-danger alert-dismissible show fade">
