@@ -18,6 +18,7 @@
         "hashids/hashids": "^4.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
+        "livewire/livewire": "^2.4",
         "mews/captcha": "^3.1",
         "simplesoftwareio/simple-qrcode": "^3.0",
         "yoeunes/toastr": "^1.2"
@@ -61,7 +62,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan vendor:publish --force --tag=livewire:assets --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
