@@ -10,6 +10,7 @@ use PDF;
 use App\Models\Agenda;
 use App\Models\Berita;
 use App\Models\Download;
+use App\Models\Dokumen;
 use App\Models\InfoGrafis;
 use App\Models\ProfilDesa;
 use App\Models\Pengumuman;
@@ -1089,6 +1090,8 @@ class BerandaController extends Controller
           $data['suket'] = $jenis_suket;
           $data['jenis_suket'] = $jenis_suket;
           $data['suket_id'] = $id;
+          $data['dokumen'] = Dokumen::where('suket_id',$id)->where('jenis',$jenis_suket)->first();
+          $data['url'] = url('/storage/surat/'.$jenis_suket.'/'. $data['dokumen']->dokumen);
           return view('frontend.progress', $data);
       }catch(\QueryBuilder $e){
           toastr()->error($e->getMessage().'error');

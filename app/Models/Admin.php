@@ -37,4 +37,9 @@ class Admin extends Authenticatable
         return $this->belongsTo(Desa::class,'desa_id','id');
     }
 
+    public function isSuperUser()
+    {
+        return ($this->roles()->first()->id=='su')?true:false;
+    }
+
 }

@@ -64,7 +64,8 @@
                             <h4>Pengaturan Website</h4>
                         </div>
                         <div class="card-body">
-<!--                             <div class="form-group row">
+                            @if(current_user('admin')->isSuperUser())
+                            <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Maintenance Mode</label>
                                 <div class="col-sm-9">
                                     <select name="" id="" class="form-control maintenance">
@@ -74,7 +75,8 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
+                            @else
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Meta Title</label>
                                 <div class="col-sm-9">
@@ -130,6 +132,7 @@
                                     @endif
                                 </div>
                             </div>
+                            @endif
                         </div>
                         <div class="card-footer text-right">
                             <button class="btn btn-primary">Simpan</button>
