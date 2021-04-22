@@ -6,12 +6,13 @@
 
 @section('header')
 <header id="content-desktop">
-	<section id="slideshow">
-	  <div class="slick">
-	  @if(count($slider) > 0)
+    <section id="slideshow">
+        <div class="slick">
+            @if(count($slider) > 0)
             @foreach($slider as $list)
             <div>
-                <img src="{{($list->img)?asset('backend/images/slider/'.$list->img):asset('backend/images/default.jpg')}}" class="" alt="">
+                <img src="{{($list->img)?asset('backend/images/slider/'.$list->img):asset('backend/images/default.jpg')}}"
+                    class="" alt="">
             </div>
             @endforeach
             @else
@@ -25,13 +26,14 @@
                 <img src="{{asset('frontend/img/background-header3.png')}}" class="" alt="">
             </div>
             @endif
-	  </div>
-	</section>
-	<div class="logo-holder">
-		<img src="{{asset('frontend/img/logoweb.png')}}" alt="">
-		<h2 class="pl-5 ml-2 f1-l-1">{{(Session::get('kecamatan_id') == '2018110602402')?'Kelurahan':'Desa'}} {{ucwords(strtolower($lokasi->nama))}} Kecamatan
+        </div>
+    </section>
+    <div class="logo-holder">
+        <img src="{{asset('frontend/img/logoweb.png')}}" alt="">
+        <h2 class="pl-5 ml-2 f1-l-1">{{(Session::get('kecamatan_id') == '2018110602402')?'Kelurahan':'Desa'}}
+            {{ucwords(strtolower($lokasi->nama))}} Kecamatan
             {{ucwords(strtolower($lokasi->kecamatan->nama))}}</h2>
-  </div>
+    </div>
 </header>
 @endsection
 
@@ -41,7 +43,7 @@
     </div>
     <div class="container">
         <h2 class="subjudul-home"><span class="span-judul">Progres Pemohon</span></h2>
-        
+
         @if(count($progress) > 0)
         <div class="row">
             <div class="col-md-12 col-lg-12">
@@ -50,25 +52,25 @@
                     <div class="text-center tracking-status-proses">
                         <p class="tracking-status text-tight">
                             @if($suket == 'sku')
-                                <strong>Surat Keterangan Usaha</strong>                            
+                            <strong>Surat Keterangan Usaha</strong>
                             @elseif($suket == 'skp')
-                                <strong>Surat Keterangan Penghasilan</strong>
+                            <strong>Surat Keterangan Penghasilan</strong>
                             @elseif($suket == 'skrt')
-                                <strong>Surat Keterangan Riwayat Tanah</strong>
+                            <strong>Surat Keterangan Riwayat Tanah</strong>
                             @elseif($suket == 'skn')
-                                <strong>Surat Keterangan Status Pernikahan</strong>
+                            <strong>Surat Keterangan Status Pernikahan</strong>
                             @elseif($suket == 'skm')
-                                <strong>Surat Keterangan Kematian</strong>
+                            <strong>Surat Keterangan Kematian</strong>
                             @elseif($suket == 'skk')
-                                <strong>Surat Keterangan Kelahiran</strong>
+                            <strong>Surat Keterangan Kelahiran</strong>
                             @elseif($suket == 'skbn')
-                                <strong>Surat Keterangan Beda Nama</strong>
+                            <strong>Surat Keterangan Beda Nama</strong>
                             @elseif($suket == 'sktm')
-                                <strong>Surat Keterangan Tidak Mampu</strong>
+                            <strong>Surat Keterangan Tidak Mampu</strong>
                             @elseif($suket == 'skaw')
-                                <strong>Surat Keterangan Ahli Waris</strong>
+                            <strong>Surat Keterangan Ahli Waris</strong>
                             @else
-                                <strong>Surat Keterangan Sapu Jagad</strong>
+                            <strong>Surat Keterangan Sapu Jagad</strong>
                             @endif
                         </p>
                     </div>
@@ -78,57 +80,61 @@
                             <div class="tracking-icon status-selesai">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="tracking-date">{{\Carbon\Carbon::parse($user->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($user->updated_at)->translatedFormat('H:i')}}</span></div>
+                            <div class="tracking-date">
+                                {{\Carbon\Carbon::parse($user->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($user->updated_at)->translatedFormat('H:i')}}</span>
+                            </div>
                             <div class="tracking-content">USER
                                 <span>{{$user->pesan}}</span>
                             </div>
                         </div>
                         @endif
                         @if(!empty($operator))
-                            @if($operator->status == 'tolak')
-                            <div class="tracking-item">
-                                <div class="tracking-icon status-gagal">
-                                    <i class="fas fa-times-circle"></i>
-                                </div>
-                                <!-- <div class="tracking-date">Jul 10, 2020<span>05:01 PM</span></div> -->
-                                <div class="tracking-content">OPERATOR DESA
-                                    @if($jenis_suket == 'sku')
-                                        @php $suket = 'usaha'; @endphp
-                                    @elseif($jenis_suket == 'sktm')
-                                        @php $suket = 'tidakMampu'; @endphp
-                                    @elseif($jenis_suket == 'skm')
-                                        @php $suket = 'kematian'; @endphp
-                                    @elseif($jenis_suket == 'skk')
-                                        @php $suket = 'skl'; @endphp
-                                    @elseif($jenis_suket == 'skp')
-                                        @php $suket = 'penghasilan'; @endphp
-                                    @elseif($jenis_suket == 'skn')
-                                        @php $suket = 'status'; @endphp
-                                    @elseif($jenis_suket == 'skbn')
-                                        @php $suket = 'bedanama'; @endphp
-                                    @elseif($jenis_suket == 'skrt')
-                                        @php $suket = 'tanah'; @endphp
-                                    @elseif($jenis_suket == 'skaw')
-                                        @php $suket = 'ahliwaris'; @endphp
-                                    @else
-                                        @php $suket = 'sapujagad'; @endphp
-                                    @endif
-                                    <span>{{$operator->pesan}}</span>
-                                    <span class="text-danger"><a href="{{route('frontend.suket.'.$suket.'.edit',['id' => base64_encode($suket_id)])}}"
-                                    >Perbaiki</a></span>
-                                </div>
+                        @if($operator->status == 'tolak')
+                        <div class="tracking-item">
+                            <div class="tracking-icon status-gagal">
+                                <i class="fas fa-times-circle"></i>
                             </div>
-                            @else
-                            <div class="tracking-item">
-                                <div class="tracking-icon status-selesai">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <div class="tracking-date">{{\Carbon\Carbon::parse($operator->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($operator->updated_at)->translatedFormat('H:i')}}</span></div>
-                                <div class="tracking-content">OPERATOR DESA
-                                    <span>{{$operator->pesan}}</span>
-                                </div>
+                            <!-- <div class="tracking-date">Jul 10, 2020<span>05:01 PM</span></div> -->
+                            <div class="tracking-content">OPERATOR DESA
+                                @if($jenis_suket == 'sku')
+                                @php $suket = 'usaha'; @endphp
+                                @elseif($jenis_suket == 'sktm')
+                                @php $suket = 'tidakMampu'; @endphp
+                                @elseif($jenis_suket == 'skm')
+                                @php $suket = 'kematian'; @endphp
+                                @elseif($jenis_suket == 'skk')
+                                @php $suket = 'skl'; @endphp
+                                @elseif($jenis_suket == 'skp')
+                                @php $suket = 'penghasilan'; @endphp
+                                @elseif($jenis_suket == 'skn')
+                                @php $suket = 'status'; @endphp
+                                @elseif($jenis_suket == 'skbn')
+                                @php $suket = 'bedanama'; @endphp
+                                @elseif($jenis_suket == 'skrt')
+                                @php $suket = 'tanah'; @endphp
+                                @elseif($jenis_suket == 'skaw')
+                                @php $suket = 'ahliwaris'; @endphp
+                                @else
+                                @php $suket = 'sapujagad'; @endphp
+                                @endif
+                                <span>{{$operator->pesan}}</span>
+                                <span class="text-danger"><a
+                                        href="{{route('frontend.suket.'.$suket.'.edit',['id' => base64_encode($suket_id)])}}">Perbaiki</a></span>
                             </div>
-                            @endif
+                        </div>
+                        @else
+                        <div class="tracking-item">
+                            <div class="tracking-icon status-selesai">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="tracking-date">
+                                {{\Carbon\Carbon::parse($operator->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($operator->updated_at)->translatedFormat('H:i')}}</span>
+                            </div>
+                            <div class="tracking-content">OPERATOR DESA
+                                <span>{{$operator->pesan}}</span>
+                            </div>
+                        </div>
+                        @endif
                         @else
                         <div class="tracking-item">
                             <div class="tracking-icon status-proses">
@@ -145,7 +151,9 @@
                             <div class="tracking-icon status-selesai">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="tracking-date">{{\Carbon\Carbon::parse($kasi->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($kasi->updated_at)->translatedFormat('H:i')}}</span></div>
+                            <div class="tracking-date">
+                                {{\Carbon\Carbon::parse($kasi->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($kasi->updated_at)->translatedFormat('H:i')}}</span>
+                            </div>
                             <div class="tracking-content">KASI DESA
                                 <span>{{$kasi->pesan}}</span>
                             </div>
@@ -176,7 +184,9 @@
                             <div class="tracking-icon status-selesai">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="tracking-date">{{\Carbon\Carbon::parse($sekdes->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($sekdes->updated_at)->translatedFormat('H:i')}}</span></div>
+                            <div class="tracking-date">
+                                {{\Carbon\Carbon::parse($sekdes->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($sekdes->updated_at)->translatedFormat('H:i')}}</span>
+                            </div>
                             <div class="tracking-content">SEKRETARIS DESA
                                 <span>{{$sekdes->pesan}}</span>
                             </div>
@@ -207,7 +217,9 @@
                             <div class="tracking-icon status-selesai">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="tracking-date">{{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('H:i')}}</span></div>
+                            <div class="tracking-date">
+                                {{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('H:i')}}</span>
+                            </div>
                             <div class="tracking-content">KEPALA DESA
                                 <span>{{$kades->pesan}}</span>
                             </div>
@@ -238,9 +250,12 @@
                             <div class="tracking-icon status-selesai">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="tracking-date">{{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('H:i')}}</span></div>
+                            <div class="tracking-date">
+                                {{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('d F Y')}}<span>{{\Carbon\Carbon::parse($kades->updated_at)->translatedFormat('H:i')}}</span>
+                            </div>
                             <div class="tracking-content">SELESAI
-                                <span class="text-success"><a href="{{ route('frontend.suket.print',['suket_id' => base64_encode($suket_id),'jenis_suket' => $jenis_suket ])}}">Download</a></span>
+                                <span class="text-success"><a href="javascript:void(0)" data-toggle="modal"
+                                        data-target="#exampleModal">Preview</a></span>
                             </div>
                         </div>
                         @endif
@@ -253,7 +268,26 @@
         @endif
     </div>
 </section>
-
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pratinjau Dokumen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe src="{{$url}}" frameborder="0" width="100%" height="450px"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <a href="{{$url}}" download="{{$dokumen->dokumen}}" type="button" class="btn btn-success" id="download">Download</a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
@@ -264,16 +298,17 @@
 
 @section('top-resource')
 <!-- Slick -->
-<link rel="stylesheet" type="text/css" href="{{asset('frontend/css/slick.css')}}"/>
-<link rel="stylesheet" type="text/css" href="{{asset('frontend/css/slick-theme.css')}}"/>
+<link rel="stylesheet" type="text/css" href="{{asset('frontend/css/slick.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset('frontend/css/slick-theme.css')}}" />
 <style media="screen">
-    #slideshow .slick div > img {
+    #slideshow .slick div>img {
         width: 100%;
         height: 420px;
         object-fit: fill;
         position: relative;
     }
-    .logo-holder{
+
+    .logo-holder {
         width: auto;
         /* height: 350px; */
         height: auto;
@@ -284,8 +319,9 @@
         position: absolute;
         top: 20px;
         left: 25px;
-        z-index:5;
+        z-index: 5;
     }
+
 </style>
 @endsection
 
@@ -293,19 +329,22 @@
 @section('bottom-resource')
 <script type="text/javascript" src="{{asset('frontend/js/slick.min.js')}}"></script>
 <script type="text/javascript">
-$('#slideshow .slick').slick({
-	autoplay: true,
-	dots: false,
-	fade: true,
-	infinite: true,
-	adaptiveHeight: true,
-	swipe: true
-});
+    $('#slideshow .slick').slick({
+        autoplay: true,
+        dots: false,
+        fade: true,
+        infinite: true,
+        adaptiveHeight: true,
+        swipe: true
+    });
+
 </script>
 <script>
-    $(document).ready( function () {
+    $(document).ready(function () {
         $('#table').DataTable();
-    } );
+    });
+    $('#download').click(function(){
+        $('#exampleModal').modal('hide')
+    })
 </script>
 @endsection
-
