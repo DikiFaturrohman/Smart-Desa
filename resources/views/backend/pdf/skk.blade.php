@@ -557,7 +557,7 @@
                 <tr>
                     <td colspan="3"></td>
                     <td colspan="3"></td>
-                    <td colspan="3" class="tengah">{{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower($desa->desa->nama))}}, \Carbon\Carbon::parse($skk->finished_date)->translatedFormat('d F Y')</td>
+                    <td colspan="3" class="tengah">{{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower($desa->desa->nama))}}, {{\Carbon\Carbon::parse($skk->finished_date)->translatedFormat('d F Y')}}</td>
                 </tr>
                 <tr>
                     <td colspan="3" class="tengah">Mengetahui :<br>{{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}}<br><br>

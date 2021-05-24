@@ -593,7 +593,7 @@
                                 <td width="10%">&nbsp;</td>
                                 <td width="55%" class="tengah cantik">
                                     <p>{{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower($desa->desa->nama))}},
-                                        \Carbon\Carbon::parse($skm->finished_date)->translatedFormat('d F Y')</p>
+                                        {{\Carbon\Carbon::parse($skm->finished_date)->translatedFormat('d F Y')}}</p>
                                     <p>{{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}}</p>
                                     <br><br><br><br><br>
                                     <p>({{$desa->kades}})</p>
