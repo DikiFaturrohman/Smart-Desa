@@ -27,7 +27,6 @@ class OneSignalAction {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
             $response = curl_exec($ch);
             curl_close($ch);
-            dd($response);
             return $response;
 
         }catch(\Exception $e){
