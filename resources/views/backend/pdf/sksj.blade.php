@@ -96,15 +96,15 @@
                 <tr>
                     <td>Alamat Kantor</td>
                     <td>:</td>
-                    <td>{{($sksj->alamat)??''}}</td>
+                    <td>{!! ($sksj->alamat)??'' !!}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td></td>
                     <td></td>
                     <td>{{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}
                         {{($desa)?$desa->nama:ucwords(strtolower($desa->desa->nama))}} Kecamatan
                         {{ucwords(strtolower($desa->desa->kecamatan->nama))}} Kabupaten Subang</td>
-                </tr>
+                </tr> -->
             </table>
 
             <p>Dengan ini menerangkan bahwa :</p>

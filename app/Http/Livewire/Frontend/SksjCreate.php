@@ -8,6 +8,7 @@ use App\Models\Pekerjaan;
 use App\Traits\AutoNumber;
 use App\Actions\SksjCreateAction;
 use App\Models\User;
+use App\Models\ProfilDesa;
 use Auth;
 
 class SksjCreate extends Component
@@ -27,13 +28,16 @@ class SksjCreate extends Component
     public $keperluan;
     public $tgl_menetap;
     public $user;
+    public $desa;
 
     public function mount()
     {
+
         $this->user = current_user('masyarakat');
         $this->nik = $this->user->nik;
         $this->nama = $this->user->nama_lengkap;
         $this->umur = \Carbon\Carbon::now()->diffInYears($this->user->tgl_lahir);
+        $this->desa = ProfilDesa::find(session()->get('desa_id'));
     }
 
     public function store()
@@ -75,6 +79,9 @@ class SksjCreate extends Component
             'id' => $this->generateAutoNumber('ds_sk_sapu_jagat'),
             'desa_id' => session()->get('desa_id'),
             'user_id' => $this->user->id,
+            'nama_pejabat' => $this->desa->kades,
+            'jabatan' => ($this->desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa',
+            'alamat' => $this->desa->alamat,
             'status' => '1',
             'nama_penduduk' => $this->nama,
             'no_nik' => $this->nik,
