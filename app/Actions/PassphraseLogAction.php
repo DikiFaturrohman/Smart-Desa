@@ -15,7 +15,7 @@ class PassphraseLogAction {
             ]);
             \DB::commit();
             return 'berhasil';
-        }catch(\Exception $e){
+        }catch(\QueryBuilder $e){
             \DB::rollback();
             return 'Gagal Membuat Data';
         }

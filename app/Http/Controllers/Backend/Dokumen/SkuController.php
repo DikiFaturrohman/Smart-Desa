@@ -382,6 +382,7 @@ class SkuController extends Controller
                 return redirect()->route('backend.dokumen.sku');
             }else{
                 (new PassphraseLogAction)->run(Auth::guard('admin')->user()->id,$signDokumen);
+                DB::commit();
                 return redirect()->route('backend.dokumen.sku.detail',['id'=>$sku->encodeHash($sku->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
