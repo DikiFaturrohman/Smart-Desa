@@ -62,13 +62,12 @@
 
 
 <body>
-  
+<!--   
   	<div class="preloader">
         <div class="loading">
             <img src="{{asset('assets/img/loading.gif')}}" width="250">
-<!--             <p>Harap Tunggu</p> -->
         </div>
-    </div>
+    </div> -->
 
     <!-- Search Overlay -->
     
