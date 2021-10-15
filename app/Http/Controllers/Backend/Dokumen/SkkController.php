@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Backend\Dokumen;
 use App\Http\Controllers\Controller;
 use App\Actions\SignDokumenAction;
 use App\Actions\GenerateFileAction;
+use App\Actions\NotifikasiSuketAction;
+use App\Actions\NotifikasiAdminAction;
+use App\Actions\GetAdminAction;
 use Illuminate\Http\Request;
 use App\Models\SKK;
 use App\Models\LogSuket;
@@ -36,10 +39,10 @@ class SkkController extends Controller
     public function index()
     {
         try{
-            if(empty(Auth::user()->desa_id)){
+            if(empty(current_user('admin')->desa_id)){
                 $data['skk'] = SKK::orderBy('created_at','asc')->orderBy('status','asc')->get();
             }else{
-                $data['skk'] = SKK::where('desa_id',Auth::user()->desa_id)->orderBy('created_at','asc')->orderBy('status','asc')->get();
+                $data['skk'] = SKK::where('desa_id',current_user('admin')->desa_id)->orderBy('created_at','asc')->orderBy('status','asc')->get();
             }
             return view('backend.dokumen.skk.list',$data);
         }catch(\Exception $e){
@@ -70,12 +73,12 @@ class SkkController extends Controller
             $data = $this->bindData($request);
             $data['id'] = $this->generateAutoNumber('ds_sk_kelahiran');
             $data['status'] = '1';
-            $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
+            $data['desa_id'] = empty(current_user('admin')->desa_id)?Session::get('desa_id'):current_user('admin')->desa_id;
             $skk = SKK::create($data);
             $generateFile = (new GenerateFileAction)->run($skk->id,'skk');
 
-            $log = $this->suketLogNotifikasi($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh operator desa ');
+            $log = (new NotifikasiSuketAction)->run($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh operator desa ');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skk,'skk'));
             DB::commit();
@@ -120,7 +123,7 @@ class SkkController extends Controller
             $skk->update($data);
             $generateFile = (new GenerateFileAction)->run($skk->id,'skk');
 
-            $log = $this->suketLogNotifikasi($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Operator Desa','operator','terima');
+            $log = (new NotifikasiSuketAction)->run($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Operator Desa','operator','terima');
 
             DB::commit();
         // $admin = Admin::where('email',$request->email)->first();
@@ -608,7 +611,6 @@ class SkkController extends Controller
 
     public function verifikasiKades(Request $request)
     {
-        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skk = SKK::find($id);
@@ -633,12 +635,11 @@ class SkkController extends Controller
             if($signDokumen == 'berhasil'){
                 $skk->update(['verifikasi_kades' => '1','status' => '0','finished_date' => \Carbon\Carbon::now()]);
 
-                $log = $this->suketLogNotifikasi($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Kepala Desa','kades','terima');
-                $admin = $this->getAdmin('operator',Session::get('desa_id'));
-                $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh kepala desa');
+                $log = (new NotifikasiSuketAction)->run($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Kepala Desa','kades','terima');
+                $admin = (new GetAdminAction)->run('operator',Session::get('desa_id'));
+                $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','operator')->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skk,'skk'));
-                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skk');
             }else{
@@ -646,7 +647,6 @@ class SkkController extends Controller
                 return redirect()->route('backend.dokumen.skk.detail',['id'=>$skk->encodeHash($skk->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
-            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -660,9 +660,9 @@ class SkkController extends Controller
             $skk = SKK::find($id);
             $skk->update(['verifikasi_sekdes' => 1]);
 
-            $log = $this->suketLogNotifikasi($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
-            $admin = $this->getAdmin('kepala_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh sekretaris desa');
+            $log = (new NotifikasiSuketAction)->run($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
+            $admin = (new GetAdminAction)->run('kepala_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','kepala_desa')->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skk,'skk'));
             DB::commit();
@@ -683,9 +683,9 @@ class SkkController extends Controller
             $skk = SKK::find($id);
             $skk->update(['verifikasi_kasi' => 1]);
 
-            $log = $this->suketLogNotifikasi($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Kasi Desa','kasi','terima');
-            $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh kasi desa');
+            $log = (new NotifikasiSuketAction)->run($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran Telah di verifikasi Oleh Kasi Desa','kasi','terima');
+            $admin = (new GetAdminAction)->run('sekretaris_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('desa_id',Session::get('desa_id'))->where('ds_admin_roles.role_id','sekretaris_desa')->first();
             
             // Mail::to($admin->email)->send(new SuketMail($admin,$skk,'skk'));
@@ -754,7 +754,7 @@ class SkkController extends Controller
 
             $this->validate($request,$rules,$messages,$label);
 
-            $log = $this->suketLogNotifikasi($skk,'skk','Penolakan',$request->pesan,'operator','tolak');
+            $log = (new NotifikasiSuketAction)->run($skk,'skk','Penolakan',$request->pesan,'operator','tolak');
             DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skk');
@@ -790,8 +790,8 @@ class SkkController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $skk->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
-            $log = $this->suketLogNotifikasi($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh operator desa ');
+            $log = (new NotifikasiSuketAction)->run($skk,'skk','Verifikasi','Pengajuan Surat Keterangan Kelahiran telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Kelahiran disetujui oleh operator desa ');
             DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skk');

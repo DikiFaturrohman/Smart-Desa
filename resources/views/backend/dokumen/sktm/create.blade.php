@@ -123,8 +123,10 @@
                                         name="user_id">
                                         <option value="">-- Pilih Nama Pengaju --</option>
                                         @foreach($users as $data)
+                                        @if($data->unggahDokumen)
                                         <option value="{{$data->id}}" {{ ( old('user_id') == $data->id) ? 'selected' : '' }}>{{$data->nama_lengkap}}
                                         </option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     @if($errors->has('user_id'))
@@ -313,34 +315,6 @@
                                         @if($errors->has('rtrw'))
                                     <div class="invalid-feedback">
                                         {{$errors->first('rtrw')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div><br>
-                            <div class="form-group mb-0 row">
-                                <label class="col-sm-3 col-form-label">File KTP</label>
-                                <div class="col-sm-9">
-                                    <img src="{{asset('backend/images/default.jpg')}}" id="preview-ktp" alt=""
-                                        width="200px">
-                                    <input type="file" class="form-control {{($errors->has('ktp'))?'is-invalid':''}}" id="ktp" name="ktp" value="{{old('ktp')}}"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                        @if($errors->has('ktp'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('ktp')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div><br>
-                            <div class="form-group mb-0 row">
-                                <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
-                                <div class="col-sm-9">
-                                    <img src="{{asset('backend/images/default.jpg')}}" id="preview-kk" alt=""
-                                        width="200px">
-                                    <input type="file" class="form-control {{($errors->has('kk'))?'is-invalid':''}}" id="kk" name="kk" value="{{old('kk')}}"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                        @if($errors->has('kk'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('kk')}}
                                     </div>
                                     @endif
                                 </div>

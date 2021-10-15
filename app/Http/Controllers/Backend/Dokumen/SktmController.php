@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Backend\Dokumen;
 use App\Http\Controllers\Controller;
 use App\Actions\GenerateFileAction;
 use App\Actions\SignDokumenAction;
+use App\Actions\NotifikasiSuketAction;
+use App\Actions\NotifikasiAdminAction;
+use App\Actions\GetAdminAction;
 use Illuminate\Http\Request;
 use App\Models\SKTM;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\ProfilDesa;
 use App\Models\LogSuket;
+use App\Models\Dokumen;
 use App\Mail\SuketMail;
 use Str;
 use Auth;
@@ -31,10 +35,10 @@ class SktmController extends Controller
     public function index()
     {
         try{
-            if(empty(Auth::user()->desa_id)){
+            if(empty(current_user('admin')->desa_id)){
                 $data['sktm'] =SKTM::orderBy('created_at','asc')->orderBy('status','asc')->get();
             }else{
-                $data['sktm'] =SKTM::where('desa_id',Auth::user()->desa_id)->orderBy('status','asc')->orderBy('created_at','asc')->get();
+                $data['sktm'] =SKTM::where('desa_id',current_user('admin')->desa_id)->orderBy('status','asc')->orderBy('created_at','asc')->get();
             }
             return view('backend.dokumen.sktm.list',$data);
         }catch(\Exception $e){
@@ -63,13 +67,11 @@ class SktmController extends Controller
             $data = $this->bindData($request);
             $data['id'] = $this->generateAutoNumber('ds_sktm');
             $data['status'] = '1';
-            $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
+            $data['desa_id'] = empty(current_user('admin')->desa_id)?Session::get('desa_id'):current_user('admin')->desa_id;
             $sktm =SKTM::create($data);
             $generateFile = (new GenerateFileAction)->run($sktm->id,'sktm');
-            $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh operator desa');
-            // $admin = Admin::where('email',$request->email)->first();
-            // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
+            $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh operator desa');
             DB::commit();
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.sktm.detail',['id'=>$sktm->encodeHash($sktm->id)]);
@@ -105,10 +107,8 @@ class SktmController extends Controller
             $sktm = SKTM::find($id);
             $sktm->update($data);
             $generateFile = (new GenerateFileAction)->run($sktm->id,'sktm');
-            $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
+            $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
             DB::commit();
-            // $admin = Admin::where('email',$request->email)->first();
-            // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
             toastr()->success('Data Berhasil Diubah','Sukses');
             return redirect()->route('backend.dokumen.sktm.detail',['id'=>$sktm->encodeHash($sktm->id)]);
         }catch(\QueryBuilder $e){
@@ -130,34 +130,6 @@ class SktmController extends Controller
             return back();
         }
     }
-    
-    // public function active(Request $request)
-    // {
-    //     try{
-    //         $id = $this->decodeHash($request->id);
-    //         $sktm =SKTM::find($id);
-    //         $sktm->update(['status' => 'show']);
-    //         toastr()->success('Data Berhasil diaktifkan','Sukses');
-    //         return redirect()->route('backend.dokumen.sktm');
-    //     }catch(\QueryBuilder $e){
-    //         toastr()->error($e->getMessage(),'Gagal');
-    //         return back();
-    //     }
-    // }
-
-    // public function inactive(Request $request)
-    // {
-    //     try{
-    //         $id = $this->decodeHash($request->id);
-    //         $sktm =SKTM::find($id);
-    //         $sktm->update(['status' => 'hide']);
-    //         toastr()->success('Data Berhasil dinonaktifkan','Sukses');
-    //         return redirect()->route('backend.dokumen.sktm');
-    //     }catch(\QueryBuilder $e){
-    //         toastr()->error($e->getMessage(),'Gagal');
-    //         return back();
-    //     }
-    // }
 
     private function validasiForm($request)
     {
@@ -174,19 +146,11 @@ class SktmController extends Controller
                 'warga_negara' => 'required',
                 'agama' => 'required',
                 'alamat' => 'required',
-                // 'kota_id' => 'required',
-                // 'kecamatan_id' => 'required',
-                // 'area_id' => 'required',
                 'nama_ayah' => 'required|max:150',
                 'nama_ibu' => 'required|max:150',
                 'alamat_orangtua' => 'required|min:6',
-                // 'kota_id_orangtua' => 'required',
-                // 'kecamatan_id_orangtua' => 'required',
-                // 'area_id_orangtua' => 'required',
                 'kasi_id' => 'required',
                 'rtrw' => 'max:1024|mimes:jpeg,jpg,png',
-                'ktp' => 'max:1024|mimes:jpeg,jpg,png',
-                'kk' => 'max:1024|mimes:jpeg,jpg,png',
                 'surat_pernyataan' => 'max:1024|mimes:jpeg,jpg,png',
             ];
         }else{
@@ -201,19 +165,11 @@ class SktmController extends Controller
                 'warga_negara' => 'required',
                 'agama' => 'required',
                 'alamat' => 'required',
-                // 'kota_id' => 'required',
-                // 'kecamatan_id' => 'required',
-                // 'area_id' => 'required',
                 'nama_ayah' => 'required|max:150',
                 'nama_ibu' => 'required|max:150',
                 'alamat_orangtua' => 'required|min:6',
-                // 'kota_id_orangtua' => 'required',
-                // 'kecamatan_id_orangtua' => 'required',
-                // 'area_id_orangtua' => 'required',
                 'kasi_id' => 'required',
                 'rtrw' => 'required|max:1024|mimes:jpeg,jpg,png',
-                'ktp' => 'required|max:1024|mimes:jpeg,jpg,png',
-                'kk' => 'required|max:1024|mimes:jpeg,jpg,png',
                 'surat_pernyataan' => 'required|max:1024|mimes:jpeg,jpg,png',
             ];
         }
@@ -263,13 +219,13 @@ class SktmController extends Controller
 
         if($request->file('rtrw')){
             if(!empty($request->id)){
-                if(\File::exists('backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)){
-                    \File::delete('backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw);
+                if(\File::exists('storage/backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)){
+                    \File::delete('storage/backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw);
                 }
             }
             $rtrw = $request->file('rtrw');
-            $destinationPath = public_path('backend/images/dokumen/sktm/rtrw');
-            $nama_rtrw = 'sktm_rtrw_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$rtrw->getClientOriginalExtension();
+            $destinationPath = public_path('storage/backend/images/dokumen/sktm/rtrw');
+            $nama_rtrw = \Str::uuid().'.'.$rtrw->getClientOriginalExtension();
             $rtrw->move($destinationPath,$nama_rtrw);
         }else{
             if($request->id){
@@ -277,47 +233,15 @@ class SktmController extends Controller
             }
         }
 
-        if($request->file('ktp')){
-            if(!empty($request->id)){
-                if(\File::exists('backend/images/dokumen/sktm/ktp/'.$sktm->file_ktp)){
-                    \File::delete('backend/images/dokumen/sktm/ktp/'.$sktm->file_ktp);
-                }
-            }
-            $ktp = $request->file('ktp');
-            $destinationPath = public_path('backend/images/dokumen/sktm/ktp');
-            $nama_ktp = 'sktm_ktp_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').$ktp->getClientOriginalExtension();
-            $ktp->move($destinationPath,$nama_ktp);
-        }else{
-            if($request->id){
-                $nama_ktp=$sktm->file_ktp;
-            }
-        }
-
-        if($request->file('kk')){
-            if(!empty($request->id)){
-                if(\File::exists('backend/images/dokumen/sktm/kk/'.$sktm->file_kk)){
-                    \File::delete('backend/images/dokumen/sktm/kk/'.$sktm->file_kk);
-                }
-            }
-            $kk = $request->file('kk');
-            $destinationPath = public_path('backend/images/dokumen/sktm/kk');
-            $nama_kk = 'sktm_kk_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').$kk->getClientOriginalExtension();
-            $kk->move($destinationPath,$nama_kk);
-        }else{
-            if($request->id){
-                $nama_kk=$sktm->file_kk;
-            }
-        }
-
         if($request->file('surat_pernyataan')){
             if(!empty($request->id)){
-                if(\File::exists('backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)){
-                    \File::delete('backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan);
+                if(\File::exists('storage/backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)){
+                    \File::delete('storage/backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan);
                 }
             }
             $surat_pernyataan = $request->file('surat_pernyataan');
-            $destinationPath = public_path('backend/images/dokumen/sktm/surat_pernyataan');
-            $nama_surat_pernyataan = 'sktm_surat_pernyataan_'.strtolower(str_replace(' ','_',$request->nama)).'_'.date('YmdHis').'.'.$surat_pernyataan->getClientOriginalExtension();
+            $destinationPath = public_path('storage/backend/images/dokumen/sktm/surat_pernyataan');
+            $nama_surat_pernyataan = \Str::uuid().'.'.$surat_pernyataan->getClientOriginalExtension();
             $surat_pernyataan->move($destinationPath,$nama_surat_pernyataan);
         }else{
             if($request->id){
@@ -347,8 +271,8 @@ class SktmController extends Controller
             'kecamatan_id_orangtua' => Session::get('kecamatan_id'),
             'area_id_orangtua' => Session::get('desa_id'),
             'file_sp_rtrw' => $nama_rtrw,
-            'file_ktp' => $nama_ktp,
-            'file_kk' => $nama_kk,
+            'file_ktp' => User::find($request->user_id)->unggahDokumen->file_ktp,
+            'file_kk' => User::find($request->user_id)->unggahDokumen->file_kk,
             'file_surat_pernyataan' => $nama_surat_pernyataan,
         ];
 
@@ -378,7 +302,6 @@ class SktmController extends Controller
 
     public function verifikasiKades(Request $request)
     {
-        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
@@ -404,12 +327,9 @@ class SktmController extends Controller
             if($signDokumen == 'berhasil'){
                 $sktm->update(['verifikasi_kades' => '1','status' => '0','finished_date' => \Carbon\Carbon::now()]);
 
-                $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Kepala Desa','kades','terima');
-                $admin = $this->getAdmin('operator',Session::get('desa_id'));
-                $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh kepala desa');
-                // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','operator')->where('desa_id',Session::get('desa_id'))->first();
-                // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
-                DB::commit();
+                $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Kepala Desa','kades','terima');
+                $admin = (new GetAdminAction)->run('operator',Session::get('desa_id'));
+                $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh kepala desa');
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.sktm');
             }else{
@@ -417,7 +337,6 @@ class SktmController extends Controller
                 return redirect()->route('backend.dokumen.sktm.detail',['id'=>$sktm->encodeHash($sktm->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
-            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -431,11 +350,10 @@ class SktmController extends Controller
             $sktm = SKTM::find($id);
             $sktm->update(['verifikasi_sekdes' => 1]);
 
-            $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
-            $admin = $this->getAdmin('kepala_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh sekretaris desa');
-            // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
-            // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
+            $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
+            $admin = (new GetAdminAction)->run('kepala_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh sekretaris desa');
+            
             DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sktm');
@@ -454,11 +372,9 @@ class SktmController extends Controller
             $sktm = SKTM::find($id);
             $sktm->update(['verifikasi_kasi' => 1]);
 
-            $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Kasi Desa','kasi','terima');
-            $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh kasi desa');
-            // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
-            // Mail::to($admin->email)->send(new SuketMail($admin,$sktm,'sktm'));
+            $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Kasi Desa','kasi','terima');
+            $admin = (new GetAdminAction)->run('sekretaris_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh kasi desa');
             DB::commit();
             toastr()->success('Data Berhasil diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sktm');
@@ -476,21 +392,22 @@ class SktmController extends Controller
             $id = $this->decodeHash($request->id);
             $sktm = SKTM::find($id);
 
-            if(\File::exists('backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)){
-                \File::delete('backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw);
+            if(\File::exists('storage/backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw)){
+                \File::delete('storage/backend/images/dokumen/sktm/rtrw/'.$sktm->file_sp_rtrw);
             }
 
-            if(\File::exists('backend/images/dokumen/sktm/ktp/'.$sktm->file_ktp)){
-                \File::delete('backend/images/dokumen/sktm/ktp/'.$sktm->file_ktp);
+            if(\File::exists('storage/backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)){
+                \File::delete('storage/backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan);
             }
 
-            if(\File::exists('backend/images/dokumen/sktm/kk/'.$sktm->file_kk)){
-                \File::delete('backend/images/dokumen/sktm/kk/'.$sktm->file_kk);
-            }
-            if(\File::exists('backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan)){
-                \File::delete('backend/images/dokumen/sktm/surat_pernyataan/'.$sktm->file_surat_pernyataan);
+            $log = LogSuket::where(['suket_id' => $sktm->id,'jenis_suket'=>'sktm'])->delete();
+            $file = Dokumen::where(['suket_id' => $sktm->id,'jenis'=>'sktm'])->first();
+
+            if(\File::exists('storage/surat/sktm/'.$file->dokumen)){
+                \File::delete('storage/surat/sktm/'.$file->dokumen);
             }
 
+            $file->delete();
             $sktm->delete();
             DB::commit();
             toastr()->success('Data Berhasil Dihapus','Sukses');
@@ -521,7 +438,7 @@ class SktmController extends Controller
 
             $this->validate($request,$rules,$messages,$label);
 
-            $log = $this->suketLogNotifikasi($sktm,'sktm','Penolakan',$request->pesan,'operator','tolak');
+            $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Penolakan',$request->pesan,'operator','tolak');
             DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.sktm');
@@ -556,8 +473,8 @@ class SktmController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $sktm->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
-            $log = $this->suketLogNotifikasi($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh operator desa');
+            $log = (new NotifikasiSuketAction)->run($sktm,'sktm','Verifikasi','Pengajuan Surat Keterangan Tidak Mampu telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Tidak Mampu disetujui oleh operator desa');
             DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.sktm');

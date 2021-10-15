@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Backend\Dokumen;
 use App\Http\Controllers\Controller;
 use App\Actions\SignDokumenAction;
 use App\Actions\GenerateFileAction;
+use App\Actions\NotifikasiSuketAction;
+use App\Actions\NotifikasiAdminAction;
+use App\Actions\GetAdminAction;
 use Illuminate\Http\Request;
 use App\Models\SKN;
 use App\Models\User;
@@ -34,10 +37,10 @@ class SknController extends Controller
     public function index()
     {
         try{
-            if(empty(Auth::user()->desa_id)){
+            if(empty(current_user('admin')->desa_id)){
                 $data['skn'] = SKN::orderBy('created_at','asc')->orderBy('status','asc')->get();
             }else{
-                $data['skn'] = SKN::where('desa_id',Auth::user()->desa_id)->orderBy('created_at','asc')->orderBy('status','asc')->get();
+                $data['skn'] = SKN::where('desa_id',current_user('admin')->desa_id)->orderBy('created_at','asc')->orderBy('status','asc')->get();
             }
             return view('backend.dokumen.skn.list',$data);
         }catch(\Exception $e){
@@ -66,12 +69,12 @@ class SknController extends Controller
             $data = $this->bindData($request);
             $data['id'] = $this->generateAutoNumber('ds_sk_nikah');
             $data['status'] = '1';
-            $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
+            $data['desa_id'] = empty(current_user('admin')->desa_id)?Session::get('desa_id'):current_user('admin')->desa_id;
             $skn = SKN::create($data);
             $generateFile = (new GenerateFileAction)->run($skn->id,'skn');
             
-            $log = $this->suketLogNotifikasi($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh operator desa ');
+            $log = (new NotifikasiSuketAction)->run($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh operator desa ');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skn,'skn'));
             DB::commit();
@@ -114,7 +117,7 @@ class SknController extends Controller
             $skn->update($data);
             $generateFile = (new GenerateFileAction)->run($skn->id,'skn');
 
-            $log = $this->suketLogNotifikasi($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Operator Desa','operator','terima');
+            $log = (new NotifikasiSuketAction)->run($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Operator Desa','operator','terima');
             DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skn,'skn'));
@@ -362,7 +365,6 @@ class SknController extends Controller
 
     public function verifikasiKades(Request $request)
     {
-        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skn = SKN::find($id);
@@ -387,12 +389,11 @@ class SknController extends Controller
             if($signDokumen == 'berhasil'){
                 $skn->update(['verifikasi_kades' => '1','status' => '0','finished_date' => \Carbon\Carbon::now()]);
 
-                $log = $this->suketLogNotifikasi($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Kepala Desa','kades','terima');
-                $admin = $this->getAdmin('operator',Session::get('desa_id'));
-                $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh kepala desa');
+                $log = (new NotifikasiSuketAction)->run($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Kepala Desa','kades','terima');
+                $admin = (new GetAdminAction)->run('operator',Session::get('desa_id'));
+                $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','operator')->where('desa_id',Session::get('desa_id'))->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skn,'skn'));
-                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skn');
             }else{
@@ -400,7 +401,6 @@ class SknController extends Controller
                 return redirect()->route('backend.dokumen.skn.detail',['id'=>$skn->encodeHash($skn->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
-            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -414,9 +414,9 @@ class SknController extends Controller
             $skn = SKN::find($id);
             $skn->update(['verifikasi_sekdes' => 1]);
 
-            $log = $this->suketLogNotifikasi($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
-            $admin = $this->getAdmin('kepala_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh sekretaris desa');
+            $log = (new NotifikasiSuketAction)->run($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
+            $admin = (new GetAdminAction)->run('kepala_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','kepala_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skn,'skn'));
             DB::commit();
@@ -437,9 +437,9 @@ class SknController extends Controller
             $skn = SKN::find($id);
             $skn->update(['verifikasi_kasi' => 1]);
 
-            $log = $this->suketLogNotifikasi($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Kasi Desa','kasi','terima');
-            $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh kasi desa');
+            $log = (new NotifikasiSuketAction)->run($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan Telah di verifikasi Oleh Kasi Desa','kasi','terima');
+            $admin = (new GetAdminAction)->run('sekretaris_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             DB::commit();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skn,'skn'));
@@ -504,7 +504,7 @@ class SknController extends Controller
 
             $this->validate($request,$rules,$messages,$label);
 
-            $log = $this->suketLogNotifikasi($skn,'skn','Penolakan',$request->pesan,'operator','tolak');
+            $log = (new NotifikasiSuketAction)->run($skn,'skn','Penolakan',$request->pesan,'operator','tolak');
             DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skn');
@@ -540,8 +540,8 @@ class SknController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $skn->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
-            $log = $this->suketLogNotifikasi($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh operator desa ');
+            $log = (new NotifikasiSuketAction)->run($skn,'skn','Verifikasi','Pengajuan Surat Keterangan Status Pernikahan telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Status Pernikahan disetujui oleh operator desa ');
             DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skn');

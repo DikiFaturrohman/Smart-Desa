@@ -122,8 +122,10 @@
                                         name="user_id">
                                         <option value="">-- Pilih Nama Pengaju --</option>
                                         @foreach($users as $data)
+                                        @if($data->unggahDokumen)
                                         <option value="{{$data->id}}" {{ ( old('user_id') == $data->id) ? 'selected' : '' }}>{{$data->nama_lengkap}}
                                         </option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     @if($errors->has('user_id'))
@@ -133,7 +135,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">Nama</label>
                                 <div class="col-sm-9">
                                     <input type="text"
@@ -145,8 +147,8 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group row">
+                            </div> -->
+                            <!-- <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">NIK</label>
                                 <div class="col-sm-9">
                                     <input type="text"
@@ -159,7 +161,7 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">Tempat Lahir</label>
                                 <div class="col-sm-9">
@@ -174,7 +176,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">Tanggal Lahir</label>
                                 <div class="col-sm-9">
                                     <input type="text"
@@ -187,8 +189,8 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group row">
+                            </div> -->
+                            <!-- <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">Jenis Kelamin</label>
                                 <div class="col-sm-9">
                                     <select name="jk" id="" class="form-control {{($errors->has('jk'))?'is-invalid':''}}" >
@@ -203,7 +205,7 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">Pekerjaan</label>
                                 <div class="col-sm-9">
@@ -236,7 +238,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label for="" class="col-sm-3 col-form-label">Alamat</label>
                                 <div class="col-sm-9">
                                     <textarea name="alamat"
@@ -247,7 +249,7 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> -->
                             <h5>Dokumen Penunjang</h5><br>
                             <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
@@ -263,7 +265,7 @@
                                     @endif
                                 </div>
                             </div><br>
-                            <div class="form-group mb-0 row">
+                            <!-- <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File KTP</label>
                                 <div class="col-sm-9">
                                     <img src="{{asset('backend/images/default.jpg')}}" id="preview-ktp" alt=""
@@ -290,7 +292,7 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div><br>
+                            </div><br> -->
                             <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                                 <div class="col-sm-9">

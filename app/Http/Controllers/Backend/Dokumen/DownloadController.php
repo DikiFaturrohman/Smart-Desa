@@ -19,10 +19,10 @@ class DownloadController extends Controller
     public function index()
     {
         try{
-            if(empty(Auth::user()->desa_id)){
+            if(empty(current_user('admin')->desa_id)){
                 $data['download'] = Download::all();
             }else{
-                $data['download'] = Download::where('desa_id',Auth::user()->desa_id)->get();
+                $data['download'] = Download::where('desa_id',current_user('admin')->desa_id)->get();
             }
             return view('backend.dokumen.download.list',$data);
         }catch(\Exception $e){
@@ -47,8 +47,8 @@ class DownloadController extends Controller
             $this->validasiForm($request);
             $data = $this->bindData($request);
             $data['id'] = $this->generateAutoNumber('ds_download');
-            $data['created_by'] = Auth::user()->name;
-            $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
+            $data['created_by'] = current_user('admin')->name;
+            $data['desa_id'] = empty(current_user('admin')->desa_id)?Session::get('desa_id'):current_user('admin')->desa_id;
             $download = Download::create($data);
             toastr()->success('Data Berhasil Ditambahkan','Sukses');
             return redirect()->route('backend.dokumen.download.detail',['id'=>$download->encodeHash($download->id)]);
@@ -77,7 +77,7 @@ class DownloadController extends Controller
             $request['id'] = $id;
             $this->validasiForm($request);
             $data = $this->bindData($request);
-            $data['updated_by'] = Auth::user()->name;
+            $data['updated_by'] = current_user('admin')->name;
             $download = Download::find($id);
             $download->update($data);
             toastr()->success('Data Berhasil Diubah','Sukses');

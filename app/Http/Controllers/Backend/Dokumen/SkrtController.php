@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Backend\Dokumen;
 use App\Http\Controllers\Controller;
 use App\Actions\GenerateFileAction;
 use App\Actions\SignDokumenAction;
+use App\Actions\NotifikasiSuketAction;
+use App\Actions\NotifikasiAdminAction;
+use App\Actions\GetAdminAction;
 use Illuminate\Http\Request;
 use App\Models\SKRT;
 use App\Models\User;
@@ -31,10 +34,10 @@ class SkrtController extends Controller
     public function index()
     {
         try{
-            if(empty(Auth::user()->desa_id)){
+            if(empty(current_user('admin')->desa_id)){
                 $data['skrt'] = SKRT::orderBy('created_at','asc')->orderBy('status','asc')->get();
             }else{
-                $data['skrt'] = SKRT::where('desa_id',Auth::user()->desa_id)->orderBy('created_at','asc')->orderBy('status','asc')->get();
+                $data['skrt'] = SKRT::where('desa_id',current_user('admin')->desa_id)->orderBy('created_at','asc')->orderBy('status','asc')->get();
             }
             return view('backend.dokumen.skrt.list',$data);
         }catch(\Exception $e){
@@ -63,12 +66,12 @@ class SkrtController extends Controller
             $data = $this->bindData($request);
             $data['id'] = $this->generateAutoNumber('ds_sk_riwayat_tanah');
             $data['status'] = '1';
-            $data['desa_id'] = empty(Auth::user()->desa_id)?Session::get('desa_id'):Auth::user()->desa_id;
+            $data['desa_id'] = empty(current_user('admin')->desa_id)?Session::get('desa_id'):current_user('admin')->desa_id;
             $skrt = SKRT::create($data);
             $generateFile = (new GenerateFileAction)->run($skrt->id,'skrt');
 
-            $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh operator desa');
+            $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh operator desa');
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
             DB::commit();
@@ -108,7 +111,7 @@ class SkrtController extends Controller
             $skrt->update($data);
             $generateFile = (new GenerateFileAction)->run($skrt->id,'skrt');
             
-            $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Operator Desa','operator','terima');
+            $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Operator Desa','operator','terima');
             DB::commit();
             // $admin = Admin::where('email',$request->email)->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
@@ -466,7 +469,6 @@ class SkrtController extends Controller
 
     public function verifikasiKades(Request $request)
     {
-        DB::beginTransaction();
         try{
             $id = $this->decodeHash($request->id);
             $skrt =  SKRT::find($id);
@@ -491,12 +493,11 @@ class SkrtController extends Controller
             if($signDokumen == 'berhasil'){
                 $skrt->update(['verifikasi_kades' => '1','status' => '0','finished_date' => \Carbon\Carbon::now()]);
 
-                $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Kepala Desa','kades','terima');
-                $admin = $this->getAdmin('operator',Session::get('desa_id'));
-                $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh kepala desa');
+                $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Kepala Desa','kades','terima');
+                $admin = (new GetAdminAction)->run('operator',Session::get('desa_id'));
+                $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh kepala desa');
                 // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','operator')->where('desa_id',Session::get('desa_id'))->first();
                 // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
-                DB::commit();
                 toastr()->success('Data Berhasil diverifikasi','Sukses');
                 return redirect()->route('backend.dokumen.skrt');
             }else{
@@ -504,7 +505,6 @@ class SkrtController extends Controller
                 return redirect()->route('backend.dokumen.skrt.detail',['id'=>$skrt->encodeHash($skrt->id)])->with('error',$signDokumen);
             }
         }catch(\QueryBuilder $e){
-            DB::rollback();
             toastr()->error($e->getMessage(),'Gagal');
             return back();
         }
@@ -518,9 +518,9 @@ class SkrtController extends Controller
             $skrt =  SKRT::find($id);
             $skrt->update(['verifikasi_sekdes' => 1]);
 
-            $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
-            $admin = $this->getAdmin('kepala_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh sekretaris desa');
+            $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Sekretaris Desa','sekdes','terima');
+            $admin = (new GetAdminAction)->run('kepala_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh sekretaris desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
             DB::commit();
@@ -541,9 +541,9 @@ class SkrtController extends Controller
             $skrt =  SKRT::find($id);
             $skrt->update(['verifikasi_kasi' => 1]);
 
-            $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Kasi Desa','kasi','terima');
-            $admin = $this->getAdmin('sekretaris_desa',Session::get('desa_id'));
-            $logAdmin = $this->logNotifikasiAdmin($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh kasi desa');
+            $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah di verifikasi Oleh Kasi Desa','kasi','terima');
+            $admin = (new GetAdminAction)->run('sekretaris_desa',Session::get('desa_id'));
+            $logAdmin = (new NotifikasiAdminAction)->run($admin,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh kasi desa');
             // $admin = Admin::join('ds_admin_roles','ds_admins.id','=','ds_admin_roles.admin_id')->where('ds_admin_roles.role_id','sekretaris_desa')->where('desa_id',Session::get('desa_id'))->first();
             // Mail::to($admin->email)->send(new SuketMail($admin,$skrt,'skrt'));
             DB::commit();
@@ -617,7 +617,7 @@ class SkrtController extends Controller
 
             $this->validate($request,$rules,$messages,$label);
 
-            $log = $this->suketLogNotifikasi($skrt,'skrt','Penolakan',$request->pesan,'operator','tolak');
+            $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Penolakan',$request->pesan,'operator','tolak');
             DB::commit();
             toastr()->success('Data Berhasil Ditolak','Sukses');
             return redirect()->route('backend.dokumen.skrt');
@@ -653,8 +653,8 @@ class SkrtController extends Controller
             $this->validate($request,$rules,$messages,$label);
 
             $skrt->update(['no_surat'=>$request->no_surat,'kasi_id' => $request->kasi_id]);
-            $log = $this->suketLogNotifikasi($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah telah di verifikasi Oleh Operator Desa','operator','terima');
-            $logAdmin = $this->logNotifikasiAdmin($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh operator desa');
+            $log = (new NotifikasiSuketAction)->run($skrt,'skrt','Verifikasi','Pengajuan Surat Keterangan Riwayat Tanah telah di verifikasi Oleh Operator Desa','operator','terima');
+            $logAdmin = (new NotifikasiAdminAction)->run($request->kasi_id,'Verifikasi','Verifikasi Surat Keterangan Riwayat Tanah disetujui oleh operator desa');
             DB::commit();
             toastr()->success('Data Berhasil Diverifikasi','Sukses');
             return redirect()->route('backend.dokumen.skrt');
