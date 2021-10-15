@@ -105,7 +105,7 @@
                                         name="kasi_id">
                                         <option value="">-- Pilih Kasi --</option>
                                         @foreach($kasi as $data)
-                                        <option value="{{$data->admin_id}}" {{ ( old('kasi_id') == $data->admin_id) ? 'selected' : '' }}>{{$data->name}}
+                                        <option value="{{$data->admin_id}}" {{ ( old('kasi_id',$sku->kasi_id) == $data->admin_id) ? 'selected' : '' }}>{{$data->name}}
                                         </option>
                                         @endforeach
                                     </select>
@@ -123,40 +123,15 @@
                                         name="user_id">
                                         <option value="">-- Pilih Nama Pengaju --</option>
                                         @foreach($users as $data)
+                                        @if($data->unggahDokumen)
                                         <option value="{{$data->id}}" {{ ( old('user_id',$sku->user_id) == $data->id) ? 'selected' : '' }}>{{$data->nama_lengkap}}
                                         </option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     @if($errors->has('user_id'))
                                     <div class="invalid-feedback">
                                         {{$errors->first('user_id')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="" class="col-sm-3 col-form-label">Nama</label>
-                                <div class="col-sm-9">
-                                    <input type="text"
-                                        class="form-control {{($errors->has('nama'))?'is-invalid':''}}"
-                                        placeholder="Masukan Nama Anda" name="nama" value="{{old('nama',$sku->nama)}}" >
-                                    @if($errors->has('nama'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('nama')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="" class="col-sm-3 col-form-label">NIK</label>
-                                <div class="col-sm-9">
-                                    <input type="text"
-                                        class="form-control {{($errors->has('nik'))?'is-invalid':''}}"
-                                        placeholder="Masukan NIK Anda" name="nik"
-                                        value="{{old('nik',$sku->nik)}}" >
-                                    @if($errors->has('nik'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('nik')}}
                                     </div>
                                     @endif
                                 </div>
@@ -171,36 +146,6 @@
                                     @if($errors->has('tempat_lahir'))
                                     <div class="invalid-feedback">
                                         {{$errors->first('tempat_lahir')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="" class="col-sm-3 col-form-label">Tanggal Lahir</label>
-                                <div class="col-sm-9">
-                                    <input type="text"
-                                        class="form-control datepicker {{($errors->has('tgl_lahir'))?'is-invalid':''}}"
-                                        placeholder="Masukan Tanggal Lahir Anda" name="tgl_lahir"
-                                        value="{{old('tgl_lahir',$sku->tgl_lahir)}}" >
-                                    @if($errors->has('tgl_lahir'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('tgl_lahir')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="" class="col-sm-3 col-form-label">Jenis Kelamin</label>
-                                <div class="col-sm-9">
-                                    <select name="jk" id="" class="form-control {{($errors->has('tgl_lahir'))?'is-invalid':''}}" >
-                                        <option value="">Pilih Jenis Kelamin</option>
-                                        <option value="laki-laki" {{(old('jk',$sku->jk)=='laki-laki')?
-                                        'selected':''}}>Laki-laki</option>
-                                        <option value="perempuan" {{(old('jk',$sku->jk)=='perempuan')?'selected':''}}>Perempuan</option>
-                                    </select>
-                                    @if($errors->has('jk'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('jk')}}
                                     </div>
                                     @endif
                                 </div>
@@ -250,23 +195,11 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="" class="col-sm-3 col-form-label">Alamat</label>
-                                <div class="col-sm-9">
-                                    <textarea name="alamat" id="" cols="30" rows="10"
-                                        class="form-control {{($errors->has('alamat'))?'is-invalid':''}}">{{old('alamat',$sku->alamat)}}</textarea>
-                                    @if($errors->has('alamat'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('alamat')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
                             <h5>Dokumen Penunjang</h5><br>
                             <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
                                 <div class="col-sm-9">
-                                    <?php $img = asset('backend/images'); ?>
+                                    <?php $img = asset('storage/backend/images'); ?>
                                     <img src="<?php echo (!empty($sku->file_sp_rtrw) ? $img . '/dokumen/sku/rtrw/' . $sku->file_sp_rtrw : $img . '/default.jpg') ?>"
                                         id="preview-rtrw" style="width: 200px">
                                     <input type="file" class="form-control {{($errors->has('rtrw'))?'is-invalid':''}}" id="rtrw" name="rtrw" value="{{old('rtrw')}}"
@@ -279,39 +212,9 @@
                                 </div>
                             </div><br>
                             <div class="form-group mb-0 row">
-                                <label class="col-sm-3 col-form-label">File KTP</label>
-                                <div class="col-sm-9">
-                                <?php $img = asset('backend/images'); ?>
-                                    <img src="<?php echo (!empty($sku->file_ktp) ? $img . '/dokumen/sku/ktp/' . $sku->file_ktp : $img . '/default.jpg') ?>"
-                                        id="preview-ktp" style="width: 200px">
-                                    <input type="file" class="form-control {{($errors->has('ktp'))?'is-invalid':''}}" id="ktp" name="ktp" value="{{old('ktp')}}"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                        @if($errors->has('ktp'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('ktp')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div><br>
-                            <div class="form-group mb-0 row">
-                                <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
-                                <div class="col-sm-9">
-                                <?php $img = asset('backend/images'); ?>
-                                    <img src="<?php echo (!empty($sku->file_kk) ? $img . '/dokumen/sku/kk/' . $sku->file_kk : $img . '/default.jpg') ?>"
-                                        id="preview-kk" style="width: 200px">
-                                    <input type="file" class="form-control {{($errors->has('kk'))?'is-invalid':''}}" id="kk" name="kk" value="{{old('kk')}}"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                        @if($errors->has('kk'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('kk')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div><br>
-                            <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                                 <div class="col-sm-9">
-                                <?php $img = asset('backend/images'); ?>
+                                <?php $img = asset('storage/backend/images'); ?>
                                     <img src="<?php echo (!empty($sku->file_surat_pernyataan) ? $img . '/dokumen/sku/surat_pernyataan/' . $sku->file_surat_pernyataan : $img . '/default.jpg') ?>"
                                         id="preview-surat_pernyataan" style="width: 200px">
                                     <input type="file" class="form-control {{($errors->has('surat_pernyataan'))?'is-invalid':''}}" id="surat_pernyataan" name="surat_pernyataan" value="{{old('surat_pernyataan')}}"
@@ -325,6 +228,7 @@
                             </div><br>
                             <div class="card-footer text-right">
                                 <a href="{{route('backend.dokumen.sku')}}" class="btn btn-secondary">Kembali</a>
+                                <button type="submit" class="btn btn-secondary">Edit</button>
                                 @if(empty($sku->no_surat))
                                 <button type="submit" class="btn btn-primary">Verifikasi</button>
                                 @endif

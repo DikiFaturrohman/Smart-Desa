@@ -105,7 +105,7 @@
                                         name="kasi_id">
                                         <option value="">-- Pilih Kasi --</option>
                                         @foreach($kasi as $data)
-                                        <option value="{{$data->admin_id}}" {{ ( old('kasi_id') == $data->admin_id) ? 'selected' : '' }}>{{$data->name}}
+                                        <option value="{{$data->admin_id}}" {{ ( old('kasi_id',$sktm->kasi_id) == $data->admin_id) ? 'selected' : '' }}>{{$data->name}}
                                         </option>
                                         @endforeach
                                     </select>
@@ -123,8 +123,10 @@
                                         name="user_id">
                                         <option value="">-- Pilih Nama Pengaju --</option>
                                         @foreach($users as $data)
+                                        @if($data->unggahDokumen)
                                         <option value="{{$data->id}}" {{ ( old('user_id',$sktm->user_id) == $data->id) ? 'selected' : '' }}>{{$data->nama_lengkap}}
                                         </option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     @if($errors->has('user_id'))
@@ -306,7 +308,7 @@
                             <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File Surat Pengantar RTRW</label>
                                 <div class="col-sm-9">
-                                    <?php $img = asset('backend/images'); ?>
+                                    <?php $img = asset('storage/backend/images'); ?>
                                     <img src="<?php echo (!empty($sktm->file_sp_rtrw) ? $img . '/dokumen/sktm/rtrw/' . $sktm->file_sp_rtrw : $img . '/default.jpg') ?>"
                                         id="preview-rtrw" style="width: 200px">
                                     <input type="file" class="form-control {{($errors->has('rtrw'))?'is-invalid':''}}" id="rtrw" name="rtrw" value="{{old('rtrw')}}"
@@ -319,39 +321,9 @@
                                 </div>
                             </div><br>
                             <div class="form-group mb-0 row">
-                                <label class="col-sm-3 col-form-label">File KTP</label>
-                                <div class="col-sm-9">
-                                <?php $img = asset('backend/images'); ?>
-                                    <img src="<?php echo (!empty($sktm->file_ktp) ? $img . '/dokumen/sktm/ktp/' . $sktm->file_ktp : $img . '/default.jpg') ?>"
-                                        id="preview-ktp" style="width: 200px">
-                                    <input type="file" class="form-control {{($errors->has('ktp'))?'is-invalid':''}}" id="ktp" name="ktp" value="{{old('ktp')}}"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                        @if($errors->has('ktp'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('ktp')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div><br>
-                            <div class="form-group mb-0 row">
-                                <label class="col-sm-3 col-form-label">File Kartu Keluarga</label>
-                                <div class="col-sm-9">
-                                <?php $img = asset('backend/images'); ?>
-                                    <img src="<?php echo (!empty($sktm->file_kk) ? $img . '/dokumen/sktm/kk/' . $sktm->file_kk : $img . '/default.jpg') ?>"
-                                        id="preview-kk" style="width: 200px">
-                                    <input type="file" class="form-control {{($errors->has('kk'))?'is-invalid':''}}" id="kk" name="kk" value="{{old('kk')}}"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                        @if($errors->has('kk'))
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('kk')}}
-                                    </div>
-                                    @endif
-                                </div>
-                            </div><br>
-                            <div class="form-group mb-0 row">
                                 <label class="col-sm-3 col-form-label">File Surat Pernyataan</label>
                                 <div class="col-sm-9">
-                                <?php $img = asset('backend/images'); ?>
+                                <?php $img = asset('storage/backend/images'); ?>
                                     <img src="<?php echo (!empty($sktm->file_surat_pernyataan) ? $img . '/dokumen/sktm/surat_pernyataan/' . $sktm->file_surat_pernyataan : $img . '/default.jpg') ?>"
                                         id="preview-surat_pernyataan" style="width: 200px">
                                     <input type="file" class="form-control {{($errors->has('surat_pernyataan'))?'is-invalid':''}}" id="surat_pernyataan" name="surat_pernyataan" value="{{old('surat_pernyataan')}}"

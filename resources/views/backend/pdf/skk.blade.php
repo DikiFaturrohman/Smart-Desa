@@ -572,7 +572,7 @@
         <div class="footer">
             <table>
                 <tr>
-                    <td style="width:10%"><img src="{{asset('frontend/img/bsre.png')}}"
+                    <td style="width:10%"><img src="frontend/img/bsre.png"
                                height="45px"></td>
                     <td style="width:90%">Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat
                         elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik, Badan Siber dan Sandi Negara.

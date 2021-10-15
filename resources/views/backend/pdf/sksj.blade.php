@@ -180,7 +180,7 @@
                             <table>
                                 <tr>
                                     <td width="70px">
-                                        <img style="width:55px;height:55px" src="{{asset('frontend/img/bsre.png')}}">
+                                        <img style="width:55px;height:55px" src="frontend/img/bsre.png">
                                     </td>
                                     <td width="210px">
                                         <span style="font-size:12px;">Ditandatangani secara elektronik
