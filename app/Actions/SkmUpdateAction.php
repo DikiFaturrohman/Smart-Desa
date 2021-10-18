@@ -16,7 +16,7 @@ class SkmUpdateAction {
             $generateFile = (new GenerateFileAction)->run($skm->id,'skm');
             \DB::commit();
             return $skm;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
 
             return 'Gagal Membuat Data';

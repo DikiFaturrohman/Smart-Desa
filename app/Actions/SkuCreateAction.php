@@ -19,7 +19,7 @@ class SkuCreateAction {
             $generateFile = (new GenerateFileAction)->run($sku->id,'sku');
             \DB::commit();
             return $sku;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
 
             return 'Gagal Membuat Data';

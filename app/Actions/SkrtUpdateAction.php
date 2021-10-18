@@ -16,7 +16,7 @@ class SkrtUpdateAction {
             $generateFile = (new GenerateFileAction)->run($skrt->id,'skrt');
             \DB::commit();
             return $skrt;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
             return 'Gagal Membuat Data';
         }

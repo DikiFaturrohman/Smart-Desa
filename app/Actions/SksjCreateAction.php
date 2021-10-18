@@ -19,7 +19,7 @@ class SksjCreateAction {
             $generateFile = (new GenerateFileAction)->run($sksj->id,'sksj');
             \DB::commit();
             return $sksj;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
             return 'Gagal Membuat Data';
         }

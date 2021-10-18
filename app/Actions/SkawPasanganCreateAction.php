@@ -27,7 +27,7 @@ class SkawPasanganCreateAction {
                 }
             }
             return true;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             return false;
         }
     }

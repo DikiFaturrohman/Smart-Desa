@@ -14,7 +14,7 @@ class NotifikasiAdminAction {
                 'photo' => 'default.jpg',
                 'tanggal' => \Carbon\Carbon::now(),
             ]);
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             return 'Gagal Membuat Data';
         }
     }

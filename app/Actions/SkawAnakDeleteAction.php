@@ -12,7 +12,7 @@ class SkawAnakDeleteAction {
             $result->delete();
             \DB::commit();
             return true;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
             return false;
         }

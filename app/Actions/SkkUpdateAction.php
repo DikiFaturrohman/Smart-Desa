@@ -16,7 +16,7 @@ class SkkUpdateAction {
             $generateFile = (new GenerateFileAction)->run($skk->id,'skk');
             \DB::commit();
             return $skk;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
 
             return 'Gagal Membuat Data';

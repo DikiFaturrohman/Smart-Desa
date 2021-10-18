@@ -19,7 +19,7 @@ class SktmCreateAction {
             $generateFile = (new GenerateFileAction)->run($sktm->id,'sktm');
             \DB::commit();
             return $sktm;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
             return 'Gagal Membuat Data';
         }

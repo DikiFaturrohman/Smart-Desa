@@ -28,7 +28,7 @@ class NotifikasiUpdateSuketAction {
                 $onesignal = (new OneSignalAction)->run($judul,$pesan,array($user->idonesignal));
                 return $onesignal;
             }   
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             return 'Gagal Membuat Data';
         }
     }

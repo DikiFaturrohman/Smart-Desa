@@ -39,7 +39,7 @@ class NotifikasiSuketAction {
                 $onesignal = (new OneSignalAction)->run($judul,$konten,array($user->idonesignal));
                 return $onesignal;
             }
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             return 'Gagal Membuat Data';
         }
     }
