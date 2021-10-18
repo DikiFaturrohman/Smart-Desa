@@ -29,7 +29,7 @@ class OneSignalAction {
             curl_close($ch);
             return $response;
 
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
 
             return 'Gagal Membuat Data';
         }

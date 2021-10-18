@@ -16,7 +16,7 @@ class SkspUpdateAction {
             $generateFile = (new GenerateFileAction)->run($skn->id,'skn');
             \DB::commit();
             return $skn;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
             return 'Gagal Membuat Data';
         }

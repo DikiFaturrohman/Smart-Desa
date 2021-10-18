@@ -24,7 +24,7 @@ class SkbnCreateAction {
             $generateFile = (new GenerateFileAction)->run($skbn->id,'skbn');
             \DB::commit();
             return $skbn;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
 
             return 'Gagal Membuat Data';

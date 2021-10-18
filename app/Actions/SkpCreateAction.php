@@ -19,7 +19,7 @@ class SkpCreateAction {
             $generateFile = (new GenerateFileAction)->run($skp->id,'skp');
             \DB::commit();
             return $skp;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             \DB::rollback();
 
             return 'Gagal Membuat Data';

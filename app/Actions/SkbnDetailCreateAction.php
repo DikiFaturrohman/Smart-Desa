@@ -21,7 +21,7 @@ class SkbnDetailCreateAction {
                ]);
            }
             return true;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             return false;
         }
     }

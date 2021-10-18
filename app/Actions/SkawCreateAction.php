@@ -25,7 +25,7 @@ class SkawCreateAction {
             $generateFile = (new GenerateFileAction)->run($skaw->id,'skaw');
             \DB::commit();
             return $skaw;
-        }catch(\Exception $e){
+        }catch(\QueryException $e){
             dd($e->getMessage());
             \DB::rollback();
             return 'Gagal Membuat Data';
