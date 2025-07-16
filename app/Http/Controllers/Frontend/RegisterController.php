@@ -109,21 +109,26 @@ class RegisterController extends Controller
             $message ='kode verifikasi anda : '.$createUser->otp.' jangan memberi tahu kepada siapapun kode rahasia ini';
             $phone = $createUser->no_telpon;
 
-            $url = 'https://sms.subang.go.id/api/send?key=36184a108497bb5dfb192ee1db22105e&gateway=4&no='.urlencode($phone).'&pesan='.urlencode($message);
+//         Update ku saya
+//             $url = 'https://sms.subang.go.id/api/send?key=36184a108497bb5dfb192ee1db22105e&gateway=4&no='.urlencode($phone).'&pesan='.urlencode($message);
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//             $ch = curl_init();
+//             curl_setopt($ch, CURLOPT_URL, $url);
+//             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $response = curl_exec ($ch);
-            $err = curl_error($ch);
-            curl_close ($ch);
+//             $response = curl_exec ($ch);
+//             $err = curl_error($ch);
+//             curl_close ($ch);
 
-            $sendMail = Mail::to($createUser->email)->send(new NotifOtp($createUser,$otp));
-
-            Session::put('user_id',$createUser->id);
-          	toastr()->success('Akun telah berhasil dibuat', 'Sukses');
-            return view('frontend.otp');
+	        $createUser->update(['is_verified'=> 1,'otp' => null]);
+            // $sendMail = Mail::to($createUser->email)->send(new NotifOtp($createUser,$otp));
+			
+        	toastr()->success('Akun Anda telah terverifikasi','Sukses');
+            return redirect()->route('frontend.login');
+        
+          	// Session::put('otp',$createUser->id);
+          	// toastr()->success('Akun telah berhasil dibuat', 'Sukses');
+          	// return view('frontend.otp');
 
         }catch(\QueryBuilder $e){
             toastr()->error($e->getMessage(),'Gagal');
@@ -197,7 +202,7 @@ class RegisterController extends Controller
 
             $user->update(['password' => bcrypt($password)]);
 
-            $sendMail = Mail::to($user->email)->send(new NotifPassword($user,$password));
+            // $sendMail = Mail::to($user->email)->send(new NotifPassword($user,$password));
             
             toastr()->success('Kata sandi baru telah dikirim via sms dan email','Sukses');
             return redirect()->route('frontend.login');

@@ -1,3 +1,11 @@
+@php
+  // defensive defaults so the PDF will still render even if something is missing:
+  $kec = optional($desa->kecamatan);
+  $kecNama = $kec->nama       ?? '[kecamatan tidak ditemukan]';
+  $desaNama = $desa->nama     ?? '[desa tidak ditemukan]';
+  $isKelurahan = $kec->id === '2018110602402';
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,11 +77,11 @@
                         <img style="margin-top: -1.2em; left: -1.1em" class="d-flex float-left tengah-gambar"
                             src="assets/img/logo.png" width="86px" height="115px">
                         <h1 style="font-size: 17pt;margin-top: -1em">PEMERINTAH DAERAH KABUPATEN SUBANG</h1>
-                        <h1 style="font-size: 18pt;margin-top: -0.5em">KECAMATAN {{$desa->desa->kecamatan->nama}}</h1>
+                        <h1 style="font-size: 18pt;margin-top: -0.5em">KECAMATAN {{$kecNama}}</h1>
                         <h1 style="font-size: 19pt;margin-top: -0.4em">KANTOR
-                            {{($desa->desa->kecamatan->id == '2018110602402')?'KELURAHAN':'DESA'}}
-                            {{($desa)?strtoupper($desa->nama):Auth::guard('masyarakat')->user()->desa->nama}}</h1>
-                        <p style="margin-top: -1em;margin-bottom: -0.25em;">{!!($desa)?$desa->alamat:'-'!!}</p>
+                            {{( $isKelurahan == '2018110602402')?'KELURAHAN':'DESA'}}
+                            {{strtoupper($desaNama)}}</h1>
+                        <p style="margin-top: -1em;margin-bottom: -0.25em;">{{$desa->alamat ?? '-'}}</p>
                     </td>
                 </tr>
             </table>
@@ -83,12 +91,12 @@
             <p class="tengah" style="margin-top: -1.2em;"><b>Nomor : {{$sku->no_surat}}</b></p>
 
             <p>Saya yang bertanda tangan di bawah,
-                {{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}}
+                {{($isKelurahan == '2018110602402')?'Lurah':'Kepala Desa'}}
                 <b>{{($desa)?$desa->kades:'-'}}</b>
-                {{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}
+                {{($isKelurahan == '2018110602402')?'Kelurahan':'Desa'}}
                 <b>{{($desa)?$desa->nama:ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}</b>
                 Kecamatan
-                <b>{{ucwords(strtolower($desa->desa->kecamatan->nama))}}</b> Kabupaten <b>Subang</b>, dengan ini
+                <b>{{ucwords(strtolower(optional(optional($desa)->kecamatan)->nama ?? '[tidak tersedia]'))}}</b> Kabupaten <b>Subang</b>, dengan ini
                 menerangkan bahwa :</p>
 
             <p>
@@ -127,7 +135,7 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}.
+                        <td>{{($isKelurahan == '2018110602402')?'Kelurahan':'Desa'}}.
                             {{ucwords(strtolower($sku->area->nama))}} Kec.
                             {{ucwords(strtolower($sku->kecamatan->nama))}} Kab. Subang</td>
                     </tr>
@@ -135,7 +143,7 @@
             </p>
 
             <p>Nama yang tertera diatas adalah benar-benar penduduk kami yang tepatnya berdomisili di {!! $sku->alamat
-                !!} {{($desa->desa->kecamatan->id == '2018110602402')?'Kelurahan':'Desa'}}
+                !!} {{($isKelurahan == '2018110602402')?'Kelurahan':'Desa'}}
                 {{ucwords(strtolower($sku->area->nama))}} Kecamatan
                 {{ucwords(strtolower($sku->kecamatan->nama))}} Kabupaten Subang. Dan benar sepengetahuan kami bahwa yang
                 bersangkutan memiliki usaha berupa:</p>
@@ -165,7 +173,7 @@
                                 </tr>
                                 <tr>
                                     <!--                                     <td colspan="3" style="width: 100%;">
-                                    {{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}} {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}
+                                    {{($isKelurahan == '2018110602402')?'Lurah':'Kepala Desa'}} {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}
                                         <br><br>
                                         <center>
                                         <span ><img src="data:image/png;base64, {!! base64_encode($barcode) !!} "
@@ -179,12 +187,12 @@
                                                 <tr>
                                                     <td width="70px">
                                                         <img style="width:55px;height:55px"
-                                                            src="{{asset('frontend/img/bsre.png')}}">
+                                                            src="frontend/img/bsre.png">
                                                     </td>
                                                     <td width="210px">
                                                         <span style="font-size:12px;">Ditandatangani secara elektronik
                                                             oleh:</span><br>
-                                                        <span>{{($desa->desa->kecamatan->id == '2018110602402')?'Lurah':'Kepala Desa'}}
+                                                        <span>{{($isKelurahan == '2018110602402')?'Lurah':'Kepala Desa'}}
                                                             {{($desa)?ucwords(strtolower($desa->nama)):ucwords(strtolower(Auth::guard('masyarakat')->user()->desa->nama))}}</span><br><br>
 
                                                         <span

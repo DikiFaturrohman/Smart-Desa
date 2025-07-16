@@ -91,7 +91,7 @@
 
 @section('top-resource')
 
-<link rel="stylesheet" href="{{asset('frontend/css/tempusdominus-bootstrap-4.min.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css">
 <!-- Add the slick-theme.css if you want default styling -->
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 <!-- Add the slick-theme.css if you want default styling -->
@@ -121,10 +121,11 @@
 @endsection
 
 @section('bottom-resource')
-<script src="{{asset('frontend/js/moment.min.js')}}" charset="utf-8"></script>
-<script src="{{asset('frontend/js/daterangepicker.js')}}" charset="utf-8"></script>
-<script src="{{asset('frontend/js/tempusdominus-bootstrap-4.min.js')}}" charset="utf-8"></script>
-<script src="{{asset('frontend/js/savy.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-daterangepicker@3.1.0/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/gh/medabida/savy/savy.min.js"></script>
+
 <!-- Slick -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script type="text/javascript">

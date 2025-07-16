@@ -2,15 +2,6 @@
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-  
-  	<FilesMatch "^\.env">
-    Order allow,deny
-    Deny from all
-	</FilesMatch>
-	<Files composer.json>
-    Order allow,deny
-    Deny from all
-	</Files>
 
     RewriteEngine On
 
@@ -29,6 +20,4 @@
     RewriteRule ^ index.php [L]
     
     
-  
-  
 </IfModule>

@@ -193,8 +193,8 @@ asset('
 
 
 @section('top-resource')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css">
 
-<link rel="stylesheet" href="{{asset('public/frontend/css/tempusdominus-bootstrap-4.min.css')}}">
 
 <!-- Add the slick-theme.css if you want default styling -->
 

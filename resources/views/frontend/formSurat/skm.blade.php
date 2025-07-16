@@ -135,7 +135,7 @@
 
 @section('bottom-resource')
 
-<script src="{{asset('frontend/js/savy.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/gh/medabida/savy/savy.min.js"></script>
 
 <script src="{{asset('frontend/js/jquery.accordion-wizard.min.js')}}"></script>
 

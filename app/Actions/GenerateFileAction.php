@@ -1,6 +1,7 @@
 <?php
 namespace App\Actions;
 
+use App\Models\Desa;
 use App\Models\ProfilDesa;
 use App\Models\SKN;
 use App\Models\SKP;
@@ -51,8 +52,18 @@ class GenerateFileAction {
         }
 
         $data[$tipe] = $tabel;
-
-        $data['desa'] = ProfilDesa::where('id',$data[$tipe]->desa_id)->first();
+        $profil = ProfilDesa::with('desa.kecamatan')
+                   ->find($tabel->desa_id);
+        if ($profil) {
+            // use the nested Desa model that has kecamatan loaded
+            $desa = $profil->desa;
+        } else {
+            \Log::warning("No ProfilDesa for id {$tabel->desa_id}, using Desa instead");
+            // fall back to your core Desa model, but eager-load kecamatan
+            $desa = Desa::with('kecamatan')
+                        ->findOrFail($tabel->desa_id);
+        }
+        $data['desa'] = $desa;
         $data['dataBenar'] = SKBNDetail::where('skbn_id',$data[$tipe]->id)->where('jenis_dok',$data[$tipe]->data_dok_benar)->first();
         $url = url('dokumen/'.$tipe.'/'.base64_encode($data[$tipe]->id).'/detail');
         $data['barcode'] = \QrCode::size(100)->generate($url);

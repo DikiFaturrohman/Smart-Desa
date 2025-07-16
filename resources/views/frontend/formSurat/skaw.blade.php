@@ -106,7 +106,9 @@
 <script src="{{asset('backend/node_modules/select2/dist/js/select2.full.min.js')}}"></script>
 <script src="{{asset('backend/node_modules/selectric/public/jquery.selectric.min.js')}}"></script>
 <!-- <script src="{{asset('frontend/js/jquery.chained.min.js')}}"></script> -->
-<script src="{{asset('frontend/js/savy.min.js')}}"></script>
+ <script src="https://cdn.jsdelivr.net/gh/medabida/savy/savy.min.js"></script>
+
+<!-- <script src="{{asset('frontend/js/savy.min.js')}}"></script> -->
 <script src="{{asset('frontend/js/jquery.accordion-wizard.min.js')}}"></script>
 <!-- Slick -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>

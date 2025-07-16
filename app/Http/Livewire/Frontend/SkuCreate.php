@@ -15,7 +15,7 @@ class SkuCreate extends Component
     use WithFileUploads;
     use AutoNumber;
 
-    public $file_sp_rtrw = null;
+    public $file_sp_rtrw;
     public $file_ktp;
     public $file_kk;
     public $file_surat_pernyataan;
@@ -118,7 +118,7 @@ class SkuCreate extends Component
     function storeFile($rtrw,$sp,$namaFile)
     {
         if($rtrw){
-            $rtrw->storeAs('backend/images/dokumen/sku/rtrw',$namaFile['file_sp_rtrw']);
+            $rtrw->storeAs('backend/images/dokumen/sku/rtrw/',$namaFile['file_sp_rtrw']);
         }
         if($sp){
             $sp->storeAs('backend/images/dokumen/sku/surat_pernyataan/',$namaFile['file_surat_pernyataan']);

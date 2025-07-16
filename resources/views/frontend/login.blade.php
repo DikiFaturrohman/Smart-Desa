@@ -172,7 +172,7 @@
                                             <br><span class="text-white">Didukung oleh :</span><br>
                                         </div>
                                         <div class="col-lg-6 col-sm-6">
-                                            <img id="content-desktop" src="{{asset('public/frontend/img/support.png')}}"
+                                            <img id="content-desktop" src="{{asset('frontend/img/support.png')}}"
                                                 class="img-fluid" style="display:block;height:80px;width:auto;">
                                         </div>
                                     </div>

@@ -1,0 +1,7 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/vendors/owl.carousel/dist/assets/owl.carousel.min.css": "/vendors/owl.carousel/dist/assets/owl.carousel.min.css",
+    "/vendors/owl.carousel/dist/assets/owl.theme.default.min.css": "/vendors/owl.carousel/dist/assets/owl.theme.default.min.css",
+    "/vendors/owl.carousel/dist/owl.carousel.min.js": "/vendors/owl.carousel/dist/owl.carousel.min.js"
+}

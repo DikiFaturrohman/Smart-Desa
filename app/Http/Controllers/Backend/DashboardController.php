@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Routing\UrlGenerator;
+
 use App\Models\SKTM;
 
 use App\Models\SKBN;
@@ -39,6 +41,8 @@ use App\Models\Slider;
 use App\Models\Admin;
 
 use App\Models\User;
+
+use App\Models\KelDesa;
 
 use Session;
 
@@ -94,6 +98,43 @@ class DashboardController extends Controller
         }
 
         
+
+    }
+
+    public function publik()
+
+    {
+
+        try{
+
+            $url        = url('/');
+            $desa_id    = KelDesa::where('url',str_replace(array("https://","http://"), "", $url))->first();
+            // echo $desa_id->id;
+
+            $data['sktm'] = SKTM::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skbn'] = SKBN::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skn'] = SKN::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skp'] = SKP::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['sku'] = SKU::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skm'] = SKM::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skk'] = SKK::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['sksj'] = SKSJ::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skrt'] = SKRT::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+            $data['skaw'] = SKAW::orderBy('created_at','asc')->where('status','1')->where('desa_id',$desa_id->id)->get();
+
+            $data['admin'] = Admin::where('status',1)->where('desa_id',$desa_id->id)->count();
+            $data['userVerified'] = User::where('is_verified',1)->where('desa_id',$desa_id->id)->count();
+            $data['userUnverified'] = User::where('is_verified',0)->where('desa_id',$desa_id->id)->count();
+
+            return view('backend.publik',$data);
+
+        }catch(\Exception $e){
+
+            toastr()->error($e->getMessage(),'Gagal');
+
+            return back();
+
+        }
 
     }
 

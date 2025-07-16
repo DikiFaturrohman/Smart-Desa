@@ -10,6 +10,14 @@ class GetAdminAction {
                     ->select('ds_admins.id as id')
                     ->where('ds_admins.desa_id',$desa_id)
                     ->where('ds_admin_roles.role_id',$role)->first();
+        if (! $admin) {
+        // Pilihannya:  
+        // a) Throw exception agar langsung ketahuan
+            throw new \Exception("Admin role {$role} di desa {$desa_id} tidak ditemukan");
+        // b) Atau return null dan skip notifikasi di caller
+        // return null;
+        }
         return $admin->id;
     }
+
 }

@@ -83,7 +83,7 @@
                 	<h6>
 						<strong>Didukung Oleh</strong>                    	
 					</h6>                	
-                    			<img src="{{asset('public/frontend/img/support.png')}}" class="img-fluid" >								                       	
+                    			<img src="https://img.icons8.com/ios-filled/100/000000/customer-support.png" class="img-fluid" >								                       	
         		</div>
 				<div class="col-xs-6 col-lg-3 px-1">
 					<h6>
@@ -100,7 +100,7 @@
 							<a href="#">Sitemap</a>
 						</li>
 					</ul>
-                	<a href="https://play.google.com/store/apps/details?id=id.go.subang.smartdesa"><img src="{{asset('frontend/img/googleplay.png')}}" class="img-fluid" width="60%" height="30%"></a>
+                	<a href="https://play.google.com/store/apps/details?id=id.go.subang.smartdesa"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/id_badge_web_generic.png" alt="Get it on Google Play" class="img-fluid" width="60%" height="30%"></a>
 				</div>
     			
     			</div>

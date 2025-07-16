@@ -13,25 +13,15 @@
     @yield('meta')
 
     <title>@yield('title') | {{(Session::get('kecamatan_id') == '2018110602402')?'Kelurahan':'Desa'}} {{ucwords(strtolower(Session::get('nama_desa')))}} Kabupaten Subang</title>
-
     <link rel="shortcut icon" href="{{asset('frontend/img/favicon.png')}}" />
-
     <!-- Bootstrap CSS -->
-
     <link rel="stylesheet" href="{{asset('frontend/css/bootstrap.css')}}">
-
     <!-- Our Custom CSS -->
-
     <link rel="stylesheet" href="{{asset('frontend/css/style.css')}}">
-
     <!-- Scrollbar Custom CSS -->
-
     <link rel="stylesheet" href="{{asset('frontend/css/jquery.mCustomScrollbar.min.css')}}">
-
     <!-- Font Awesome -->
-
     <link rel="stylesheet" href="{{asset('frontend/css/all.min.css')}}">
-
     <script src="{{asset('frontend/js/all.min.js')}}"></script>
     <style>
         .preloader {
@@ -130,7 +120,8 @@
 
     <!-- jQuery -->
 
-    <script src="{{asset('frontend/js/jquery-3.5.1.min.js')}}"></script>
+    <!-- <script src="{{asset('frontend/js/jquery-3.5.1.min.js')}}"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     <!-- Bootstrap JS -->
 
@@ -219,7 +210,7 @@
         });
 
     </script>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e574b73280b5fb9"></script>
+    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=YOUR_PROPERTY_KEY&product=inline-share-buttons' async='async'></script>
 </body>
 
 </html>

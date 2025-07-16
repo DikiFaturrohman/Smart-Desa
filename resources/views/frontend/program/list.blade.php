@@ -127,7 +127,7 @@
 
         <div class="pt-3">
 
-            {{$list->links('frontend.layout.pagination')}}
+            
 
 
         </div>

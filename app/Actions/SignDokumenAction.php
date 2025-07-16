@@ -64,7 +64,7 @@ class SignDokumenAction {
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $post,
             CURLOPT_HTTPHEADER => array(
-                "authorization: Basic c21hcnRkZXNhOiFzbWFydGRlc2EyMDIwIw==",
+                "authorization: Basic c2lwYW50YXMtamF3YXJhOnNpcGFudGFzMjAyMw==",
                 "content-type: multipart/form-data",
             ),
             ));

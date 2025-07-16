@@ -9,7 +9,7 @@ use Auth;
 
 class PassphraseController extends Controller
 {
-	public $kunci = 'Sm4r7D3s42020';
+	public $kunci = 'sm4rT_d354';
 
     function __construct()
     {

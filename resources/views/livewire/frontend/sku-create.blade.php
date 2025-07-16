@@ -4,7 +4,7 @@
     <!-- content -->
     @include('notification.unggah')
     @if($user->unggahDokumen)
-    <form wire:submit.prevent="store" method="post" type="multipart" id="mainform">
+    <form wire:submit.prevent="store" enctype="multipart/form-data" id="mainform">
         <div class="form-group row">
             <label for="" class="col-sm-4 col-form-label">Scan/Foto Surat Pengantar RT/RW <span
                     class="text-danger">*</span></label>

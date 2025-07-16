@@ -16,4 +16,10 @@ class ProfilDesa extends Model
     public function desa(){
         return $this->belongsTo(Desa::class,'id','id');
     }
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id');
+    }
+
+
 }
