@@ -400,7 +400,7 @@
                 "value": "#1e0a0a"
             },
             "shape": {
-                "type": "triangle",
+                "type": "rectangle",
                 "stroke": {
                     "width": 0,
                     "color": "#000000"
